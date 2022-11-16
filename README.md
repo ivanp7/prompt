@@ -32,3 +32,9 @@ Prompt colors and characters can be overridden globally and separately for each 
 If prompt length exceeds specified limit,
 it is contracted in a smart way so the information loss in minimized.
 
+## Screenshots of `demo.sh`
+
+![](screenshots/demo-1.png)
+
+![](screenshots/demo-2.png)
+
