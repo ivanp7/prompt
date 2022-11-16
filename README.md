@@ -10,10 +10,13 @@ For full feature demonstration and usage example, run `demo.sh` (not installed w
 The output is long, so a terminal multiplexer or a terminal with vertical scrolling is required.
 Terminus font or another programming font with extra glyph support is recommended.
 
-Recommended usage of this prompt is to set your shell's own prompt to empty string,
+Recommended usage of this prompt is to set your shell's own left prompt to empty string,
 and print this prompt on a separate line right before the command input line.
 
-Main features of the prompt:
+`remote.sh` is a helper script doing some of the work for `remote.py`,
+setting environment variables for everything except status, path, exit code, and execution time.
+
+## Main features of the prompt
 
 1. Is controlled by environment variables.
 The prompt does not analyze shell state by itself,
