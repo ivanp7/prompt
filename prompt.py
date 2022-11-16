@@ -239,6 +239,8 @@ class Prompt:
 
         assert len(CHAR_PATH_OMIT) == 1
         assert len(CHAR_PATH_NONPRINT) == 1
+        assert len(CHAR_PATH_DIR_UNREADABLE) == 1
+        assert len(CHAR_PATH_DIR_UNWRITABLE) == 1
 
         COLOR_PATH_DIR_FG = self._style.get('col_path_dir_fg', DEFAULT_COLOR_PATH_DIR_FG)
         COLOR_PATH_SEP_FG = self._style.get('col_path_sep_fg', DEFAULT_COLOR_PATH_SEP_FG)

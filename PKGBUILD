@@ -11,7 +11,7 @@ license=('Unlicense')
 depends=(python)
 
 source=('prompt.py' 'prompt.sh')
-md5sums=('19fab8ea593806a6ec070d7b561082f0' '2c9895deca3b893a7617c6038b5a5bf3')
+md5sums=('4ec5b35efbbb425ad1957fdf0f36c2f4' '2c9895deca3b893a7617c6038b5a5bf3')
 
 package ()
 {
