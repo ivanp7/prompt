@@ -137,96 +137,18 @@ class Prompt:
 
         assert self._max_length is None or self._max_length > 0
 
+        for prop in ['style', 'status', 'path', 'git_branch', 'git_ahead', 'git_behind',
+                     'git_merging', 'git_untracked', 'git_modified', 'git_staged',
+                     'exit_code', 'exec_time', 'root', 'max_length']:
+            setattr(self, prop, property(
+                fget=lambda slf: getattr(self, '_' + prop)))
+
         self._construct()
 
     def __str__(self) -> str:
         """Return string representation of prompt.
         """
         return self._str
-
-    @property
-    def status(self) -> str:
-        """Return status.
-        """
-        return self._status
-
-    @property
-    def path(self) -> str:
-        """Return path.
-        """
-        return self._path
-
-    @property
-    def git_branch(self) -> str:
-        """Return git branch name.
-        """
-        return self._git_branch
-
-    @property
-    def git_ahead(self) -> str:
-        """Return number of commits local repo is ahead of remote.
-        """
-        return self._git_ahead
-
-    @property
-    def git_behind(self) -> str:
-        """Return number of commits local repo is behind of remote.
-        """
-        return self._git_behind
-
-    @property
-    def git_merging(self) -> str:
-        """Return True if local repo is in merging state, otherwise False.
-        """
-        return self._git_merging
-
-    @property
-    def git_untracked(self) -> str:
-        """Return True if local repo has untracked files, otherwise False.
-        """
-        return self._git_untracked
-
-    @property
-    def git_modified(self) -> str:
-        """Return True if local repo has modified files, otherwise False.
-        """
-        return self._git_modified
-
-    @property
-    def git_staged(self) -> str:
-        """Return True if local repo has staged files, otherwise False.
-        """
-        return self._git_staged
-
-    @property
-    def exit_code(self) -> str:
-        """Return exit code.
-        """
-        return self._exit_code
-
-    @property
-    def exec_time(self) -> str:
-        """Return execution time.
-        """
-        return self._exec_time
-
-    @property
-    def root(self) -> str:
-        """Return True if prompt is for root user, otherwise False.
-        """
-        return self._root
-
-    @property
-    def max_length(self) -> str:
-        """Return upper limit for prompt length.
-        """
-        return self._max_length
-
-    @property
-    def style(self) -> str:
-        """Return prompt style.
-        """
-        return self._style
 
     def _prettify_exit_code(self, exit_code: str) -> tuple[str, str]:
         """Prettify exit code.
@@ -238,43 +160,16 @@ class Prompt:
         assert len(char_sep) == 1
 
         known_exit_codes = {
-                "1": "GENERAL",
-                "2": "MISUSE",
-                "126": "NOTEXEC",
-                "127": "NOTFOUND",
+                "1": "GENERAL", "2": "MISUSE", "126": "NOTEXEC", "127": "NOTFOUND",
                 # signals #
-                "129": "SIGHUP",
-                "130": "SIGINT",
-                "131": "SIGQUIT",
-                "132": "SIGILL",
-                "133": "SIGTRAP",
-                "134": "SIGABRT",
-                "135": "SIGBUS",
-                "136": "SIGFPE",
-                "137": "SIGKILL",
-                "138": "SIGUSR1",
-                "139": "SIGSEGV",
-                "140": "SIGUSR2",
-                "141": "SIGPIPE",
-                "142": "SIGALRM",
-                "143": "SIGTERM",
-                "144": "SIGSTKFLT",
-                "145": "SIGCHLD",
-                "146": "SIGCONT",
-                "147": "SIGSTOP",
-                "148": "SIGTSTP",
-                "149": "SIGTTIN",
-                "150": "SIGTTOU",
-                "151": "SIGURG",
-                "152": "SIGXCPU",
-                "153": "SIGXFSZ",
-                "154": "SIGVTALRM",
-                "155": "SIGPROF",
-                "156": "SIGWINCH",
-                "157": "SIGIO",
-                "158": "SIGPWR",
-                "159": "SIGSYS",
-                "162": "SIGRTMIN"}
+                "129": "SIGHUP",  "130": "SIGINT",    "131": "SIGQUIT", "132": "SIGILL",
+                "133": "SIGTRAP", "134": "SIGABRT",   "135": "SIGBUS",  "136": "SIGFPE",
+                "137": "SIGKILL", "138": "SIGUSR1",   "139": "SIGSEGV", "140": "SIGUSR2",
+                "141": "SIGPIPE", "142": "SIGALRM",   "143": "SIGTERM", "144": "SIGSTKFLT",
+                "145": "SIGCHLD", "146": "SIGCONT",   "147": "SIGSTOP", "148": "SIGTSTP",
+                "149": "SIGTTIN", "150": "SIGTTOU",   "151": "SIGURG",  "152": "SIGXCPU",
+                "153": "SIGXFSZ", "154": "SIGVTALRM", "155": "SIGPROF", "156": "SIGWINCH",
+                "157": "SIGIO",   "158": "SIGPWR",    "159": "SIGSYS",  "162": "SIGRTMIN"}
 
         if exit_code == "0":
             return "", ""
