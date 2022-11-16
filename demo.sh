@@ -26,7 +26,10 @@ unset PROMPT_MAX_LENGTH
 echo "${R}The prompt is controlled by the following environment variables:
 
 ${S}PROMPT_STATUS${R} -- arbitrary short status message
+
 ${S}PROMPT_PATH${R} -- absolute path to present working directory (if unset, ${S}PWD${R} is used instead)
+    ${S}PROMPT_DIR_UNREADABLE${R} -- present working directory is unreadable
+    ${S}PROMPT_DIR_UNWRITABLE${R} -- present working directory is unwritable
 
 ${S}PROMPT_GIT_BRANCH${R} -- name of current git branch (unset if not in git repository)
     ${S}PROMPT_GIT_AHEAD${R} -- number of commits ahead remote repository (unset if none)
@@ -82,6 +85,19 @@ Root directory is the exception:
 "
 
 PROMPT_PATH="/" "$PROMPT_SCRIPT"
+
+echo "
+
+
+The directory can be indicated as unreadable, unwritable, or both:
+"
+
+export PROMPT_PATH="/tmp/sessions/1/log"
+PROMPT_DIR_UNREADABLE= "$PROMPT_SCRIPT"
+echo
+PROMPT_DIR_UNWRITABLE= "$PROMPT_SCRIPT"
+echo
+PROMPT_DIR_UNREADABLE= PROMPT_DIR_UNWRITABLE= "$PROMPT_SCRIPT"
 
 echo "
 
@@ -189,16 +205,19 @@ With all supported indicators enabled at once, the prompt looks like this:
 "
 
 export PROMPT_STATUS="PROMPT_STATUS"
-export PROMPT_PATH="/this/is/PROMPT_PATH/var"
+export PROMPT_PATH="/this/is/PROMPT_PATH"
+export PROMPT_DIR_UNREADABLE=
+export PROMPT_DIR_UNWRITABLE=
 export PROMPT_GIT_BRANCH="PROMPT_GIT_BRANCH"
-export PROMPT_GIT_AHEAD=10
-export PROMPT_GIT_BEHIND=5
+export PROMPT_GIT_AHEAD=15
+export PROMPT_GIT_BEHIND=11
 export PROMPT_GIT_MERGING=
 export PROMPT_GIT_UNTRACKED=
 export PROMPT_GIT_MODIFIED=
 export PROMPT_GIT_STAGED=
 export PROMPT_EXIT_CODE=138
 export PROMPT_EXEC_TIME=999
+export PROMPT_ROOT=
 
 "$PROMPT_SCRIPT"
 
@@ -227,21 +246,21 @@ PROMPT_MAX_LENGTH=64 "$PROMPT_SCRIPT"
 echo "
 - minimum is 2 characters per path component:
 "
-PROMPT_MAX_LENGTH=59 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=60 "$PROMPT_SCRIPT"
 echo "
 - execution time disappears:
 "
-PROMPT_MAX_LENGTH=58 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=59 "$PROMPT_SCRIPT"
 echo "
 - exit code disappears, leaving color strip only:
 "
-PROMPT_MAX_LENGTH=49 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=50 "$PROMPT_SCRIPT"
 echo "
 - status disappears:
 "
-PROMPT_MAX_LENGTH=45 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=46 "$PROMPT_SCRIPT"
 
 echo "
-Length of the final prompt is 32, which is a third (32/$MAX_COLS) of the original length!
+Length of the final prompt is 33, which is a third (33/$MAX_COLS) of the original length!
 "
 

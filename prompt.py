@@ -20,11 +20,14 @@ DEFAULT_COLOR_STATUS_ROOT_BG = 202 # style['col_status_r_bg']
 
 DEFAULT_CHAR_PATH_OMIT = "▶"     # style['ch_path_omit']
 DEFAULT_CHAR_PATH_NONPRINT = "_" # style['ch_path_nonprint']
+DEFAULT_CHAR_PATH_DIR_UNREADABLE = "r" # style['ch_path_dir_unreadable']
+DEFAULT_CHAR_PATH_DIR_UNWRITABLE = "w" # style['ch_path_dir_unwritable']
 
 DEFAULT_COLOR_PATH_DIR_FG = 254      # style['col_path_dir_fg']
 DEFAULT_COLOR_PATH_SEP_FG = 236      # style['col_path_sep_fg']
 DEFAULT_COLOR_PATH_OMIT_FG = 200     # style['col_path_omit_fg']
 DEFAULT_COLOR_PATH_NONPRINT_FG = 196 # style['col_path_nonprint_fg']
+DEFAULT_COLOR_PATH_PERM_FG = 196     # style['col_path_perm_fg']
 DEFAULT_COLOR_PATH_BG = 240          # style['col_path_bg']
 
 ##################
@@ -109,6 +112,7 @@ class Prompt:
     """Shell prompt.
     """
     def __init__(self, status: str, path: str,
+                 path_dir_unreadable: bool=False, path_dir_unwritable: bool=False,
                  git_branch: str=None,
                  git_ahead: str=None, git_behind: str=None, git_merging: bool=False,
                  git_untracked: bool=False, git_modified: bool=False, git_staged: bool=False,
@@ -120,7 +124,11 @@ class Prompt:
         self._style = style
 
         self._status = status
+
         self._path = path
+        self._path_dir_unreadable = path_dir_unreadable
+        self._path_dir_unwritable = path_dir_unwritable
+
         self._git_branch = git_branch
         self._git_ahead = git_ahead
         self._git_behind = git_behind
@@ -128,6 +136,7 @@ class Prompt:
         self._git_untracked = git_untracked
         self._git_modified = git_modified
         self._git_staged = git_staged
+
         self._exit_code, self._exit_code_suffix = self._prettify_exit_code(exit_code)
         self._exit_success = exit_code == "0" or not exit_code
         self._exec_time = self._prettify_exec_time(exec_time)
@@ -137,7 +146,8 @@ class Prompt:
 
         assert self._max_length is None or self._max_length > 0
 
-        for prop in ['style', 'status', 'path', 'git_branch', 'git_ahead', 'git_behind',
+        for prop in ['style', 'status', 'path', 'path_dir_unreadable', 'path_dir_unwritable',
+                     'git_branch', 'git_ahead', 'git_behind',
                      'git_merging', 'git_untracked', 'git_modified', 'git_staged',
                      'exit_code', 'exec_time', 'root', 'max_length']:
             setattr(self, prop, property(
@@ -224,6 +234,8 @@ class Prompt:
 
         CHAR_PATH_OMIT = self._style.get('ch_path_omit', DEFAULT_CHAR_PATH_OMIT)
         CHAR_PATH_NONPRINT = self._style.get('ch_path_nonprint', DEFAULT_CHAR_PATH_NONPRINT)
+        CHAR_PATH_DIR_UNREADABLE = self._style.get('ch_path_dir_unreadable', DEFAULT_CHAR_PATH_DIR_UNREADABLE)
+        CHAR_PATH_DIR_UNWRITABLE = self._style.get('ch_path_dir_unwritable', DEFAULT_CHAR_PATH_DIR_UNWRITABLE)
 
         assert len(CHAR_PATH_OMIT) == 1
         assert len(CHAR_PATH_NONPRINT) == 1
@@ -232,6 +244,7 @@ class Prompt:
         COLOR_PATH_SEP_FG = self._style.get('col_path_sep_fg', DEFAULT_COLOR_PATH_SEP_FG)
         COLOR_PATH_OMIT_FG = self._style.get('col_path_omit_fg', DEFAULT_COLOR_PATH_OMIT_FG)
         COLOR_PATH_NONPRINT_FG = self._style.get('col_path_nonprint_fg', DEFAULT_COLOR_PATH_NONPRINT_FG)
+        COLOR_PATH_PERM_FG = self._style.get('col_path_perm_fg', DEFAULT_COLOR_PATH_PERM_FG)
         COLOR_PATH_BG = self._style.get('col_path_bg', DEFAULT_COLOR_PATH_BG)
 
         CHAR_GIT_AHEAD = self._style.get('ch_git_ahead', DEFAULT_CHAR_GIT_AHEAD)
@@ -298,6 +311,9 @@ class Prompt:
             path_omitted = [0] * len(path)
         else:
             length += 1 + 1 + 1 + 1 # triangle, space, slash, space
+
+        if self._path_dir_unreadable or self._path_dir_unwritable:
+            length += int(self._path_dir_unreadable) + int(self._path_dir_unwritable) + 1 # char, char, space
 
         length_git_status_block = 0
         length_git_branch = 0
@@ -444,6 +460,17 @@ class Prompt:
             self._str += color1(COLOR_PATH_DIR_FG) + "/"
         self._str += " "
 
+        if self._path_dir_unreadable or self._path_dir_unwritable:
+            self._str += color1(COLOR_PATH_PERM_FG)
+
+            if self._path_dir_unreadable:
+                self._str += CHAR_PATH_DIR_UNREADABLE
+
+            if self._path_dir_unwritable:
+                self._str += CHAR_PATH_DIR_UNWRITABLE
+
+            self._str += " "
+
         if git_status:
             self._str += color2(fg=prev_bg, bg=COLOR_GIT_BG) + TRIANGLE + " "
             prev_bg = COLOR_GIT_BG
@@ -494,6 +521,8 @@ class Prompt:
 if __name__ == '__main__':
     print(str(Prompt(os.environ.get('PROMPT_STATUS', ""),
                      os.environ['PROMPT_PATH'] if 'PROMPT_PATH' in os.environ else os.environ['PWD'],
+                     path_dir_unreadable='PROMPT_DIR_UNREADABLE' in os.environ,
+                     path_dir_unwritable='PROMPT_DIR_UNWRITABLE' in os.environ,
                      git_branch=os.environ.get('PROMPT_GIT_BRANCH', None),
                      git_ahead=os.environ.get('PROMPT_GIT_AHEAD', None),
                      git_behind=os.environ.get('PROMPT_GIT_BEHIND', None),
