@@ -34,5 +34,7 @@ else
     unset PROMPT_GIT_UNTRACKED PROMPT_GIT_MODIFIED PROMPT_GIT_STAGED
 fi
 
+export PROMPT_MAX_LENGTH="$(tput cols)"
+
 exec prompt.py
 
