@@ -74,7 +74,7 @@ DEFAULT_COLOR_EXEC_TIME_BG = 238 # style['col_exec_time_bg']
 ### postfix ###
 ###############
 
-DEFAULT_STRING_POSTFIX = "" # style['str_postfix']
+DEFAULT_STRING_POSTFIX = "" if os.environ['TERM'] != 'linux' else "▶▶" # style['str_postfix']
 
 DEFAULT_COLOR_POSTFIX_FG = 244 # style['col_postfix_fg']
 
@@ -219,7 +219,7 @@ class Prompt:
     def _construct(self) -> None:
         """Construct prompt string for display.
         """
-        TRIANGLE = ""
+        TRIANGLE = "" if os.environ['TERM'] != 'linux' else "▶"
 
         #######################################
         # read style settings for this prompt #

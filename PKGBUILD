@@ -4,14 +4,15 @@ pkgname=prompt-ivanp7
 pkgdesc="Simple and informative portable prompt"
 
 pkgver=1
-pkgrel=1
+pkgrel=2
 
 arch=('any')
 license=('Unlicense')
 depends=(python)
 
 source=('prompt.py' 'prompt.sh')
-md5sums=('4ec5b35efbbb425ad1957fdf0f36c2f4' '12a62864dfcf6adde3de1aebe2ed06bf')
+sha256sums=('fb3b5cfc3f4adb261f44e8e5643667bf7570668853deb9f575075305f84597c3'
+            'de44ce45270698d78ebb60215e5cb0ab8d6801cc8b7059e483a090827d47859e')
 
 package ()
 {
