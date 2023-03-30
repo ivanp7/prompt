@@ -188,7 +188,7 @@ Execution time is displayed as days, hours, minutes, and seconds.
 Up to 2 most significant components are displayed:
 "
 
-PROMPT_STATUS="1 second" PROMPT_EXEC_TIME=10 "$PROMPT_SCRIPT"
+PROMPT_STATUS="1 second" PROMPT_EXEC_TIME=1 "$PROMPT_SCRIPT"
 echo
 PROMPT_STATUS="100 seconds" PROMPT_EXEC_TIME=100 "$PROMPT_SCRIPT"
 echo

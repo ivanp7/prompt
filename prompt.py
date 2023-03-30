@@ -134,7 +134,7 @@ class Prompt:
         try:
             self._path_git_dir_depth = int(path_git_dir_depth)
         except:
-            self._path_git_dir_depth = -1
+            self._path_git_dir_depth = -2 # -1 is insufficient for $PWD == /
         self._git_ahead = git_ahead
         self._git_behind = git_behind
         self._git_merging = git_merging
@@ -447,7 +447,7 @@ class Prompt:
         self._str += color2(fg=prev_bg, bg=COLOR_PATH_BG) + TRIANGLE + " "
         prev_bg = COLOR_PATH_BG
 
-        path_dir_fg = COLOR_PATH_DIR_FG if (self._path_git_dir_depth + 1) < len(path) else COLOR_PATH_GIT_DIR_FG
+        path_dir_fg = COLOR_PATH_GIT_DIR_FG if self._path_git_dir_depth >= (len(path) - 1) else COLOR_PATH_DIR_FG
 
         if path:
             for i, component, sep, omitted in zip(range(len(path)), path, path_sep, path_omitted):
@@ -467,7 +467,7 @@ class Prompt:
                 if omitted > 0:
                     self._str += color1(COLOR_PATH_OMIT_FG) + CHAR_PATH_OMIT
 
-                if i == (len(path) - 1) - (self._path_git_dir_depth + 1):
+                if i + 1 == (len(path) - 1) - self._path_git_dir_depth:
                     path_dir_fg = COLOR_PATH_GIT_DIR_FG
         else:
             self._str += color1(path_dir_fg) + "/"
