@@ -11,8 +11,8 @@ license=('Unlicense')
 depends=(python)
 
 source=('prompt.py' 'prompt.sh')
-sha256sums=('fb3b5cfc3f4adb261f44e8e5643667bf7570668853deb9f575075305f84597c3'
-            'de44ce45270698d78ebb60215e5cb0ab8d6801cc8b7059e483a090827d47859e')
+sha256sums=('a23fac35ec520d95b5eec8cd147b28fc144df6c787fb828598c79cf5bed64c48'
+            'b5540dd8db81d886309445488b4ab1c4a273e8eebce7913733a16a13d8f2cef9')
 
 package ()
 {

@@ -32,6 +32,7 @@ ${S}PROMPT_PATH${R} -- absolute path to present working directory (if unset, ${S
     ${S}PROMPT_DIR_UNWRITABLE${R} -- present working directory is unwritable
 
 ${S}PROMPT_GIT_BRANCH${R} -- name of current git branch (unset if not in git repository)
+    ${S}PROMPT_GIT_DIR_DEPTH${R} -- depth into repository directory tree (unset if not in git repository)
     ${S}PROMPT_GIT_AHEAD${R} -- number of commits ahead remote repository (unset if none)
     ${S}PROMPT_GIT_BEHIND${R} -- number of commits behind remote repository (unset if none)
     ${S}PROMPT_GIT_MERGING${R} -- repository is in merging state (unset otherwise)
@@ -115,10 +116,13 @@ echo "
 
 Git indicators are displayed in the following order:
 ($(c 228)branch${R}) ($(c 254)ahead${R})($(c 166)behind${R}) ($(c 33)merging${R})($(c 160)untracked${R})($(c 214)modified${R})($(c 34)staged${R})
+
+Directories belonging to a git repository are highlighted with a different color:
 "
 
-export PROMPT_PATH="/home/user/projects/cool-program"
+export PROMPT_PATH="/home/user/projects/cool-program/src"
 export PROMPT_GIT_BRANCH="master"
+export PROMPT_GIT_DIR_DEPTH=1
 export PROMPT_GIT_AHEAD=2
 export PROMPT_GIT_BEHIND=1
 export PROMPT_GIT_MERGING=
@@ -143,7 +147,7 @@ export PROMPT_GIT_STAGED=
 echo
 unset PROMPT_GIT_AHEAD PROMPT_GIT_STAGED
 "$PROMPT_SCRIPT"
-unset PROMPT_GIT_BRANCH
+unset PROMPT_GIT_BRANCH PROMPT_GIT_DIR_DEPTH
 
 echo "
 
@@ -209,6 +213,7 @@ export PROMPT_PATH="/this/is/PROMPT_PATH"
 export PROMPT_DIR_UNREADABLE=
 export PROMPT_DIR_UNWRITABLE=
 export PROMPT_GIT_BRANCH="PROMPT_GIT_BRANCH"
+export PROMPT_GIT_DIR_DEPTH=0
 export PROMPT_GIT_AHEAD=15
 export PROMPT_GIT_BEHIND=11
 export PROMPT_GIT_MERGING=

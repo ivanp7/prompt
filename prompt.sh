@@ -10,6 +10,15 @@ if git rev-parse --is-inside-work-tree > /dev/null 2>&1 &&
 then
     export PROMPT_GIT_BRANCH="$(git branch --show-current)"
 
+    GIT_ROOT="$(git rev-parse --show-toplevel 2> /dev/null)"
+    GIT_RELPATH="$(realpath --relative-base="$GIT_ROOT" "$PWD")"
+    if [ "$GIT_RELPATH" = "." ]
+    then
+        export PROMPT_GIT_DIR_DEPTH=0
+    else
+        export PROMPT_GIT_DIR_DEPTH=$((1 + $(printf "$GIT_RELPATH" | sed 's|[^/]||g' | wc -m)))
+    fi
+
     export PROMPT_GIT_AHEAD="$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d ' ')"
     [ "$PROMPT_GIT_AHEAD" -gt 0 ] || unset PROMPT_GIT_AHEAD
 
@@ -29,6 +38,7 @@ then
     git diff --cached --quiet 2> /dev/null &&
         unset PROMPT_GIT_STAGED || export PROMPT_GIT_STAGED=
 else
+    unset PROMPT_GIT_DIR_DEPTH
     unset PROMPT_GIT_BRANCH
     unset PROMPT_GIT_AHEAD PROMPT_GIT_BEHIND PROMPT_GIT_MERGING
     unset PROMPT_GIT_UNTRACKED PROMPT_GIT_MODIFIED PROMPT_GIT_STAGED

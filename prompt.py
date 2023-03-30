@@ -24,6 +24,7 @@ DEFAULT_CHAR_PATH_DIR_UNREADABLE = "r" # style['ch_path_dir_unreadable']
 DEFAULT_CHAR_PATH_DIR_UNWRITABLE = "w" # style['ch_path_dir_unwritable']
 
 DEFAULT_COLOR_PATH_DIR_FG = 254      # style['col_path_dir_fg']
+DEFAULT_COLOR_PATH_GIT_DIR_FG = 229  # style['col_path_git_dir_fg']
 DEFAULT_COLOR_PATH_SEP_FG = 236      # style['col_path_sep_fg']
 DEFAULT_COLOR_PATH_OMIT_FG = 200     # style['col_path_omit_fg']
 DEFAULT_COLOR_PATH_NONPRINT_FG = 196 # style['col_path_nonprint_fg']
@@ -113,7 +114,7 @@ class Prompt:
     """
     def __init__(self, status: str, path: str,
                  path_dir_unreadable: bool=False, path_dir_unwritable: bool=False,
-                 git_branch: str=None,
+                 git_branch: str=None, path_git_dir_depth: str=None,
                  git_ahead: str=None, git_behind: str=None, git_merging: bool=False,
                  git_untracked: bool=False, git_modified: bool=False, git_staged: bool=False,
                  exit_code: str=None, exec_time: str=None,
@@ -130,6 +131,10 @@ class Prompt:
         self._path_dir_unwritable = path_dir_unwritable
 
         self._git_branch = git_branch
+        try:
+            self._path_git_dir_depth = int(path_git_dir_depth)
+        except:
+            self._path_git_dir_depth = -1
         self._git_ahead = git_ahead
         self._git_behind = git_behind
         self._git_merging = git_merging
@@ -146,7 +151,7 @@ class Prompt:
 
         assert self._max_length is None or self._max_length > 0
 
-        for prop in ['style', 'status', 'path', 'path_dir_unreadable', 'path_dir_unwritable',
+        for prop in ['style', 'status', 'path', 'path_dir_unreadable', 'path_dir_unwritable', 'path_git_dir_depth',
                      'git_branch', 'git_ahead', 'git_behind',
                      'git_merging', 'git_untracked', 'git_modified', 'git_staged',
                      'exit_code', 'exec_time', 'root', 'max_length']:
@@ -243,6 +248,7 @@ class Prompt:
         assert len(CHAR_PATH_DIR_UNWRITABLE) == 1
 
         COLOR_PATH_DIR_FG = self._style.get('col_path_dir_fg', DEFAULT_COLOR_PATH_DIR_FG)
+        COLOR_PATH_GIT_DIR_FG = self._style.get('col_path_git_dir_fg', DEFAULT_COLOR_PATH_GIT_DIR_FG)
         COLOR_PATH_SEP_FG = self._style.get('col_path_sep_fg', DEFAULT_COLOR_PATH_SEP_FG)
         COLOR_PATH_OMIT_FG = self._style.get('col_path_omit_fg', DEFAULT_COLOR_PATH_OMIT_FG)
         COLOR_PATH_NONPRINT_FG = self._style.get('col_path_nonprint_fg', DEFAULT_COLOR_PATH_NONPRINT_FG)
@@ -441,8 +447,10 @@ class Prompt:
         self._str += color2(fg=prev_bg, bg=COLOR_PATH_BG) + TRIANGLE + " "
         prev_bg = COLOR_PATH_BG
 
+        path_dir_fg = COLOR_PATH_DIR_FG if (self._path_git_dir_depth + 1) < len(path) else COLOR_PATH_GIT_DIR_FG
+
         if path:
-            for component, sep, omitted in zip(path, path_sep, path_omitted):
+            for i, component, sep, omitted in zip(range(len(path)), path, path_sep, path_omitted):
                 self._str += color1(COLOR_PATH_SEP_FG) + sep
 
                 if omitted > 0:
@@ -454,12 +462,15 @@ class Prompt:
                     elif part[0] == '/':
                         self._str += color1(COLOR_PATH_NONPRINT_FG) + CHAR_PATH_NONPRINT * len(part)
                     else:
-                        self._str += color1(COLOR_PATH_DIR_FG) + part
+                        self._str += color1(path_dir_fg) + part
 
                 if omitted > 0:
                     self._str += color1(COLOR_PATH_OMIT_FG) + CHAR_PATH_OMIT
+
+                if i == (len(path) - 1) - (self._path_git_dir_depth + 1):
+                    path_dir_fg = COLOR_PATH_GIT_DIR_FG
         else:
-            self._str += color1(COLOR_PATH_DIR_FG) + "/"
+            self._str += color1(path_dir_fg) + "/"
         self._str += " "
 
         if self._path_dir_unreadable or self._path_dir_unwritable:
@@ -526,6 +537,7 @@ if __name__ == '__main__':
                      path_dir_unreadable='PROMPT_DIR_UNREADABLE' in os.environ,
                      path_dir_unwritable='PROMPT_DIR_UNWRITABLE' in os.environ,
                      git_branch=os.environ.get('PROMPT_GIT_BRANCH', None),
+                     path_git_dir_depth=os.environ.get('PROMPT_GIT_DIR_DEPTH', None),
                      git_ahead=os.environ.get('PROMPT_GIT_AHEAD', None),
                      git_behind=os.environ.get('PROMPT_GIT_BEHIND', None),
                      git_merging='PROMPT_GIT_MERGING' in os.environ,
