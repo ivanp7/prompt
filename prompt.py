@@ -64,13 +64,6 @@ DEFAULT_COLOR_EXIT_CODE_SUCCESS_BG = 35 # style['col_exit_code_success_bg']
 DEFAULT_COLOR_EXIT_CODE_FAIL_FG = 252   # style['col_exit_code_fail_fg']
 DEFAULT_COLOR_EXIT_CODE_FAIL_BG = 124 # style['col_exit_code_fail_bg']
 
-######################
-### execution time ###
-######################
-
-DEFAULT_COLOR_EXEC_TIME_FG = 244 # style['col_exec_time_fg']
-DEFAULT_COLOR_EXEC_TIME_BG = 238 # style['col_exec_time_bg']
-
 ###############
 ### postfix ###
 ###############
@@ -286,12 +279,6 @@ class Prompt:
         else:
             COLOR_EXIT_CODE_FG = self._style.get('col_exit_code_fail_fg', DEFAULT_COLOR_EXIT_CODE_FAIL_FG)
             COLOR_EXIT_CODE_BG = self._style.get('col_exit_code_fail_bg', DEFAULT_COLOR_EXIT_CODE_FAIL_BG)
-
-        if self._exit_code is not None:
-            COLOR_EXEC_TIME_FG = COLOR_EXIT_CODE_BG
-        else:
-            COLOR_EXEC_TIME_FG = self._style.get('col_exec_time_fg', DEFAULT_COLOR_EXEC_TIME_FG)
-        COLOR_EXEC_TIME_BG = self._style.get('col_exec_time_bg', DEFAULT_COLOR_EXEC_TIME_BG)
 
         POSTFIX = self._style.get('str_postfix', DEFAULT_STRING_POSTFIX)
 
