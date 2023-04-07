@@ -2,7 +2,7 @@
 
 # Set all prompt variables except PROMPT_STATUS, PROMPT_PATH, PROMPT_EXIT_CODE, PROMPT_EXEC_TIME
 
-PROMPT_PY="$(realpath -L -- "$(dirname -- "$0")/prompt.py")"
+PROMPT_PY="$(realpath -- "$(dirname -- "$0")/prompt.py")"
 
 [ "$PROMPT_PATH" ] && { cd -- "$PROMPT_PATH" || exit 1; unset PROMPT_PATH; }
 
@@ -10,7 +10,6 @@ PROMPT_PY="$(realpath -L -- "$(dirname -- "$0")/prompt.py")"
 [ ! -w "$PWD" ] && export PROMPT_DIR_UNWRITABLE= || unset PROMPT_DIR_UNWRITABLE
 [ -g "$PWD" ] && export PROMPT_DIR_SETGUID= || unset PROMPT_DIR_SETGUID
 [ -k "$PWD" ] && export PROMPT_DIR_STICKY= || unset PROMPT_DIR_STICKY
-[ -L "$PWD" ] && export PROMPT_DIR_SYMLINK= || unset PROMPT_DIR_SYMLINK
 
 if git rev-parse --is-inside-work-tree > /dev/null 2>&1 &&
     [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" = "false" ]
