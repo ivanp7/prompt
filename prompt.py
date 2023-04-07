@@ -22,13 +22,18 @@ DEFAULT_CHAR_PATH_OMIT = "▶"     # style['ch_path_omit']
 DEFAULT_CHAR_PATH_NONPRINT = "_" # style['ch_path_nonprint']
 DEFAULT_CHAR_PATH_DIR_UNREADABLE = "r" # style['ch_path_dir_unreadable']
 DEFAULT_CHAR_PATH_DIR_UNWRITABLE = "w" # style['ch_path_dir_unwritable']
+DEFAULT_CHAR_PATH_DIR_SETGUID    = "g" # style['ch_path_dir_setguid']
+DEFAULT_CHAR_PATH_DIR_STICKY     = "t" # style['ch_path_dir_sticky']
+DEFAULT_CHAR_PATH_DIR_SYMLINK    = "L" # style['ch_path_dir_symlink']
 
 DEFAULT_COLOR_PATH_DIR_FG = 254      # style['col_path_dir_fg']
 DEFAULT_COLOR_PATH_GIT_DIR_FG = 228  # style['col_path_git_dir_fg']
 DEFAULT_COLOR_PATH_SEP_FG = 236      # style['col_path_sep_fg']
 DEFAULT_COLOR_PATH_OMIT_FG = 200     # style['col_path_omit_fg']
 DEFAULT_COLOR_PATH_NONPRINT_FG = 196 # style['col_path_nonprint_fg']
-DEFAULT_COLOR_PATH_PERM_FG = 196     # style['col_path_perm_fg']
+DEFAULT_COLOR_PATH_NOPERM_FG = 196   # style['col_path_noperm_fg']
+DEFAULT_COLOR_PATH_PERM_FG = 40      # style['col_path_perm_fg']
+DEFAULT_COLOR_PATH_TYPE_FG = 39      # style['col_path_type_fg']
 DEFAULT_COLOR_PATH_BG = 240          # style['col_path_bg']
 
 ##################
@@ -107,6 +112,7 @@ class Prompt:
     """
     def __init__(self, status: str, path: str,
                  path_dir_unreadable: bool=False, path_dir_unwritable: bool=False,
+                 path_dir_setguid: bool=False, path_dir_sticky: bool=False, path_dir_symlink: bool=False,
                  git_branch: str=None, path_git_dir_depth: str=None,
                  git_ahead: str=None, git_behind: str=None, git_merging: bool=False,
                  git_untracked: bool=False, git_modified: bool=False, git_staged: bool=False,
@@ -122,6 +128,9 @@ class Prompt:
         self._path = path
         self._path_dir_unreadable = path_dir_unreadable
         self._path_dir_unwritable = path_dir_unwritable
+        self._path_dir_setguid = path_dir_setguid
+        self._path_dir_sticky = path_dir_sticky
+        self._path_dir_symlink = path_dir_symlink
 
         self._git_branch = git_branch
         try:
@@ -144,7 +153,8 @@ class Prompt:
 
         assert self._max_length is None or self._max_length > 0
 
-        for prop in ['style', 'status', 'path', 'path_dir_unreadable', 'path_dir_unwritable', 'path_git_dir_depth',
+        for prop in ['style', 'status', 'path', 'path_dir_unreadable', 'path_dir_unwritable',
+                     'path_dir_setguid', 'path_dir_sticky', 'path_dir_symlink', 'path_git_dir_depth',
                      'git_branch', 'git_ahead', 'git_behind',
                      'git_merging', 'git_untracked', 'git_modified', 'git_staged',
                      'exit_code', 'exec_time', 'root', 'max_length']:
@@ -234,18 +244,26 @@ class Prompt:
         CHAR_PATH_NONPRINT = self._style.get('ch_path_nonprint', DEFAULT_CHAR_PATH_NONPRINT)
         CHAR_PATH_DIR_UNREADABLE = self._style.get('ch_path_dir_unreadable', DEFAULT_CHAR_PATH_DIR_UNREADABLE)
         CHAR_PATH_DIR_UNWRITABLE = self._style.get('ch_path_dir_unwritable', DEFAULT_CHAR_PATH_DIR_UNWRITABLE)
+        CHAR_PATH_DIR_SETGUID = self._style.get('ch_path_dir_setguid', DEFAULT_CHAR_PATH_DIR_SETGUID)
+        CHAR_PATH_DIR_STICKY = self._style.get('ch_path_dir_sticky', DEFAULT_CHAR_PATH_DIR_STICKY)
+        CHAR_PATH_DIR_SYMLINK = self._style.get('ch_path_dir_symlink', DEFAULT_CHAR_PATH_DIR_SYMLINK)
 
         assert len(CHAR_PATH_OMIT) == 1
         assert len(CHAR_PATH_NONPRINT) == 1
         assert len(CHAR_PATH_DIR_UNREADABLE) == 1
         assert len(CHAR_PATH_DIR_UNWRITABLE) == 1
+        assert len(CHAR_PATH_DIR_SETGUID) == 1
+        assert len(CHAR_PATH_DIR_STICKY) == 1
+        assert len(CHAR_PATH_DIR_SYMLINK) == 1
 
         COLOR_PATH_DIR_FG = self._style.get('col_path_dir_fg', DEFAULT_COLOR_PATH_DIR_FG)
         COLOR_PATH_GIT_DIR_FG = self._style.get('col_path_git_dir_fg', DEFAULT_COLOR_PATH_GIT_DIR_FG)
         COLOR_PATH_SEP_FG = self._style.get('col_path_sep_fg', DEFAULT_COLOR_PATH_SEP_FG)
         COLOR_PATH_OMIT_FG = self._style.get('col_path_omit_fg', DEFAULT_COLOR_PATH_OMIT_FG)
         COLOR_PATH_NONPRINT_FG = self._style.get('col_path_nonprint_fg', DEFAULT_COLOR_PATH_NONPRINT_FG)
+        COLOR_PATH_NOPERM_FG = self._style.get('col_path_noperm_fg', DEFAULT_COLOR_PATH_NOPERM_FG)
         COLOR_PATH_PERM_FG = self._style.get('col_path_perm_fg', DEFAULT_COLOR_PATH_PERM_FG)
+        COLOR_PATH_TYPE_FG = self._style.get('col_path_type_fg', DEFAULT_COLOR_PATH_TYPE_FG)
         COLOR_PATH_BG = self._style.get('col_path_bg', DEFAULT_COLOR_PATH_BG)
 
         CHAR_GIT_AHEAD = self._style.get('ch_git_ahead', DEFAULT_CHAR_GIT_AHEAD)
@@ -307,8 +325,11 @@ class Prompt:
         else:
             length += 1 + 1 + 1 + 1 # triangle, space, slash, space
 
-        if self._path_dir_unreadable or self._path_dir_unwritable:
-            length += int(self._path_dir_unreadable) + int(self._path_dir_unwritable) + 1 # char, char, space
+        if self._path_dir_unreadable or self._path_dir_unwritable \
+                or self._path_dir_setguid or self._path_dir_sticky or self._path_dir_symlink:
+            length += int(self._path_dir_unreadable) + int(self._path_dir_unwritable) + \
+                    int(self._path_dir_setguid) + int(self._path_dir_sticky) + \
+                    int(self._path_dir_symlink) + 1 # char, char, char, char, char, space
 
         length_git_status_block = 0
         length_git_branch = 0
@@ -460,14 +481,30 @@ class Prompt:
             self._str += color1(path_dir_fg) + "/"
         self._str += " "
 
-        if self._path_dir_unreadable or self._path_dir_unwritable:
-            self._str += color1(COLOR_PATH_PERM_FG)
+        if self._path_dir_unreadable or self._path_dir_unwritable \
+                or self._path_dir_setguid or self._path_dir_sticky or self._path_dir_symlink:
+            if self._path_dir_unreadable or self._path_dir_unwritable:
+                self._str += color1(COLOR_PATH_NOPERM_FG)
 
-            if self._path_dir_unreadable:
-                self._str += CHAR_PATH_DIR_UNREADABLE
+                if self._path_dir_unreadable:
+                    self._str += CHAR_PATH_DIR_UNREADABLE
 
-            if self._path_dir_unwritable:
-                self._str += CHAR_PATH_DIR_UNWRITABLE
+                if self._path_dir_unwritable:
+                    self._str += CHAR_PATH_DIR_UNWRITABLE
+
+            if self._path_dir_setguid or self._path_dir_sticky:
+                self._str += color1(COLOR_PATH_PERM_FG)
+
+                if self._path_dir_setguid:
+                    self._str += CHAR_PATH_DIR_SETGUID
+
+                if self._path_dir_sticky:
+                    self._str += CHAR_PATH_DIR_STICKY
+
+            if self._path_dir_symlink:
+                self._str += color1(COLOR_PATH_TYPE_FG)
+
+                self._str += CHAR_PATH_DIR_SYMLINK
 
             self._str += " "
 
@@ -519,6 +556,9 @@ if __name__ == '__main__':
                      os.environ['PROMPT_PATH'] if 'PROMPT_PATH' in os.environ else os.environ['PWD'],
                      path_dir_unreadable='PROMPT_DIR_UNREADABLE' in os.environ,
                      path_dir_unwritable='PROMPT_DIR_UNWRITABLE' in os.environ,
+                     path_dir_setguid='PROMPT_DIR_SETGUID' in os.environ,
+                     path_dir_sticky='PROMPT_DIR_STICKY' in os.environ,
+                     path_dir_symlink='PROMPT_DIR_SYMLINK' in os.environ,
                      git_branch=os.environ.get('PROMPT_GIT_BRANCH', None),
                      path_git_dir_depth=os.environ.get('PROMPT_GIT_DIR_DEPTH', None),
                      git_ahead=os.environ.get('PROMPT_GIT_AHEAD', None),

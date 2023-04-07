@@ -1,9 +1,16 @@
 #!/bin/sh
 
+# Set all prompt variables except PROMPT_STATUS, PROMPT_PATH, PROMPT_EXIT_CODE, PROMPT_EXEC_TIME
+
+PROMPT_PY="$(realpath -L -- "$(dirname -- "$0")/prompt.py")"
+
 [ "$PROMPT_PATH" ] && { cd -- "$PROMPT_PATH" || exit 1; unset PROMPT_PATH; }
 
-[ -r "." ] && unset PROMPT_DIR_UNREADABLE || export PROMPT_DIR_UNREADABLE=
-[ -w "." ] && unset PROMPT_DIR_UNWRITABLE || export PROMPT_DIR_UNWRITABLE=
+[ ! -r "$PWD" ] && export PROMPT_DIR_UNREADABLE= || unset PROMPT_DIR_UNREADABLE
+[ ! -w "$PWD" ] && export PROMPT_DIR_UNWRITABLE= || unset PROMPT_DIR_UNWRITABLE
+[ -g "$PWD" ] && export PROMPT_DIR_SETGUID= || unset PROMPT_DIR_SETGUID
+[ -k "$PWD" ] && export PROMPT_DIR_STICKY= || unset PROMPT_DIR_STICKY
+[ -L "$PWD" ] && export PROMPT_DIR_SYMLINK= || unset PROMPT_DIR_SYMLINK
 
 if git rev-parse --is-inside-work-tree > /dev/null 2>&1 &&
     [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" = "false" ]
@@ -44,7 +51,10 @@ else
     unset PROMPT_GIT_UNTRACKED PROMPT_GIT_MODIFIED PROMPT_GIT_STAGED
 fi
 
-export PROMPT_MAX_LENGTH="$(tput cols)"
+[ "$(id -u)" -eq 0 ] && export PROMPT_ROOT= || unset PROMPT_ROOT
 
-exec prompt.py
+: ${PROMPT_MAX_LENGTH:=$(tput cols)}
+export PROMPT_MAX_LENGTH
+
+exec "$PROMPT_PY"
 
