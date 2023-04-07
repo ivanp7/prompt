@@ -1,10 +1,10 @@
 #!/bin/sh
 
-MAX_COLS=99
+MIN_COLS=99
 CURRENT_COLS="$(tput cols)"
-if [ "$(tput cols)" -lt $MAX_COLS ]
+if [ "$(tput cols)" -lt $MIN_COLS ]
 then
-    echo "This demo requires a terminal with at least $MAX_COLS columns to be displayed correctly."
+    echo "This demo requires a terminal with at least $MIN_COLS columns to be displayed correctly."
     echo "The current terminal has $CURRENT_COLS columns."
     exit 1
 fi
@@ -227,7 +227,7 @@ export PROMPT_ROOT=
 "$PROMPT_SCRIPT"
 
 echo "
-This prompt's length is $MAX_COLS columns. It is too long and may not fit in the terminal.
+This prompt's length is 97 columns. It is too long and may not fit in the terminal.
 However, it is possible to set length limit so the prompt would be contracted if necessary.
 
 Steps of contraction:"
@@ -235,37 +235,37 @@ Steps of contraction:"
 echo "
 - postfix disappears:
 "
-PROMPT_MAX_LENGTH=98 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=96 "$PROMPT_SCRIPT"
 echo "
 - exit code suffix disappears:
 "
-PROMPT_MAX_LENGTH=96 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=94 "$PROMPT_SCRIPT"
 echo "
 - git branch name disappears:
 "
-PROMPT_MAX_LENGTH=88 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=86 "$PROMPT_SCRIPT"
 echo "
 - characters are omitted from path components:
 "
-PROMPT_MAX_LENGTH=64 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=62 "$PROMPT_SCRIPT"
 echo "
 - minimum is 2 characters per path component:
 "
-PROMPT_MAX_LENGTH=60 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=58 "$PROMPT_SCRIPT"
 echo "
 - execution time disappears:
 "
-PROMPT_MAX_LENGTH=59 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=57 "$PROMPT_SCRIPT"
 echo "
 - exit code disappears, leaving color strip only:
 "
-PROMPT_MAX_LENGTH=50 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=48 "$PROMPT_SCRIPT"
 echo "
 - status disappears:
 "
-PROMPT_MAX_LENGTH=46 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=44 "$PROMPT_SCRIPT"
 
 echo "
-Length of the final prompt is 33, which is a third (33/$MAX_COLS) of the original length!
+Length of the final prompt is 33, which is a third (33/97) of the original length!
 "
 

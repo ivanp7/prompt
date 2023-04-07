@@ -366,18 +366,18 @@ class Prompt:
             length_exit_code_block += length_exit_code + length_exit_code_suffix
             length += length_exit_code_block
 
+        length += 1 + len(POSTFIX) # triangle, postfix
+
         length_exec_time_block = 0
         length_exec_time = 0
         if self._exec_time is not None:
-            length_exec_time_block += 1 + 1 # triangle, space
+            length_exec_time_block += 1 # space
 
             if self._exec_time:
-                length_exec_time += len(self._exec_time) + 1 # execution time, space
+                length_exec_time += len(self._exec_time) # execution time
 
             length_exec_time_block += length_exec_time
             length += length_exec_time_block
-
-        length += 1 + len(POSTFIX) # triangle, postfix
 
         ##############################################
         # contract prompt to fit within length limit #
@@ -516,16 +516,12 @@ class Prompt:
             if exit_code:
                 self._str += color1(COLOR_EXIT_CODE_FG) + exit_code + exit_code_suffix + " "
 
-        if exec_time is not None:
-            self._str += color2(fg=prev_bg, bg=COLOR_EXEC_TIME_BG) + TRIANGLE + " "
-            prev_bg = COLOR_EXEC_TIME_BG
-
-            if exec_time:
-                self._str += color1(COLOR_EXEC_TIME_FG) + exec_time + " "
-
         self._str += color2(fg=prev_bg, transparent_bg=True) + TRIANGLE
         if POSTFIX:
             self._str += color1(POSTFIX_FG) + POSTFIX
+
+        if exec_time is not None:
+            self._str += " " + exec_time
 
         # reset all text decorations
         self._str += color1(None)
