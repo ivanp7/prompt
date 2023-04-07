@@ -8,8 +8,8 @@ import re
 ### status ###
 ##############
 
-DEFAULT_COLOR_STATUS_NON_ROOT_FG = 248 # style['col_status_nr_fg']
-DEFAULT_COLOR_STATUS_NON_ROOT_BG = 238 # style['col_status_nr_bg']
+DEFAULT_COLOR_STATUS_NON_ROOT_FG = 250 # style['col_status_nr_fg']
+DEFAULT_COLOR_STATUS_NON_ROOT_BG = 240 # style['col_status_nr_bg']
 
 DEFAULT_COLOR_STATUS_ROOT_FG = 236 # style['col_status_r_fg']
 DEFAULT_COLOR_STATUS_ROOT_BG = 202 # style['col_status_r_bg']
@@ -18,7 +18,7 @@ DEFAULT_COLOR_STATUS_ROOT_BG = 202 # style['col_status_r_bg']
 ### path ###
 ############
 
-DEFAULT_CHAR_PATH_OMIT = "▶"     # style['ch_path_omit']
+DEFAULT_CHAR_PATH_OMIT = "≈"     # style['ch_path_omit']
 DEFAULT_CHAR_PATH_NONPRINT = "_" # style['ch_path_nonprint']
 DEFAULT_CHAR_PATH_DIR_UNREADABLE = "r" # style['ch_path_dir_unreadable']
 DEFAULT_CHAR_PATH_DIR_UNWRITABLE = "w" # style['ch_path_dir_unwritable']
@@ -26,13 +26,13 @@ DEFAULT_CHAR_PATH_DIR_SETGUID    = "g" # style['ch_path_dir_setguid']
 DEFAULT_CHAR_PATH_DIR_STICKY     = "t" # style['ch_path_dir_sticky']
 
 DEFAULT_COLOR_PATH_DIR_FG = 254      # style['col_path_dir_fg']
-DEFAULT_COLOR_PATH_GIT_DIR_FG = 228  # style['col_path_git_dir_fg']
-DEFAULT_COLOR_PATH_SEP_FG = 236      # style['col_path_sep_fg']
-DEFAULT_COLOR_PATH_OMIT_FG = 200     # style['col_path_omit_fg']
+DEFAULT_COLOR_PATH_GIT_DIR_FG = 229  # style['col_path_git_dir_fg']
+DEFAULT_COLOR_PATH_SEP_FG = 234      # style['col_path_sep_fg']
+DEFAULT_COLOR_PATH_OMIT_FG = 39      # style['col_path_omit_fg']
 DEFAULT_COLOR_PATH_NONPRINT_FG = 196 # style['col_path_nonprint_fg']
 DEFAULT_COLOR_PATH_NOPERM_FG = 160   # style['col_path_noperm_fg']
 DEFAULT_COLOR_PATH_PERM_FG = 40      # style['col_path_perm_fg']
-DEFAULT_COLOR_PATH_BG = 240          # style['col_path_bg']
+DEFAULT_COLOR_PATH_BG = 238          # style['col_path_bg']
 
 ##################
 ### git status ###
@@ -48,12 +48,12 @@ DEFAULT_CHAR_GIT_STAGED = "•"    # style['ch_git_staged']
 
 DEFAULT_COLOR_GIT_BRANCH_FG = 230    # style['col_git_branch_fg']
 DEFAULT_COLOR_GIT_AHEAD_FG = 254     # style['col_git_ahead_fg']
-DEFAULT_COLOR_GIT_BEHIND_FG = 166    # style['col_git_behind_fg']
-DEFAULT_COLOR_GIT_MERGING_FG = 33    # style['col_git_merging_fg']
-DEFAULT_COLOR_GIT_UNTRACKED_FG = 160 # style['col_git_untracked_fg']
-DEFAULT_COLOR_GIT_MODIFIED_FG = 214  # style['col_git_modified_fg']
-DEFAULT_COLOR_GIT_STAGED_FG = 34     # style['col_git_staged_fg']
-DEFAULT_COLOR_GIT_BG = 238           # style['col_git_bg']
+DEFAULT_COLOR_GIT_BEHIND_FG = 232    # style['col_git_behind_fg']
+DEFAULT_COLOR_GIT_MERGING_FG = 19    # style['col_git_merging_fg']
+DEFAULT_COLOR_GIT_UNTRACKED_FG = 124 # style['col_git_untracked_fg']
+DEFAULT_COLOR_GIT_MODIFIED_FG = 220  # style['col_git_modified_fg']
+DEFAULT_COLOR_GIT_STAGED_FG = 40     # style['col_git_staged_fg']
+DEFAULT_COLOR_GIT_BG = 240           # style['col_git_bg']
 
 #################
 ### exit code ###
@@ -62,16 +62,16 @@ DEFAULT_COLOR_GIT_BG = 238           # style['col_git_bg']
 DEFAULT_CHAR_EXIT_CODE_SEP = '·' # style['ch_exit_code_sep']
 
 DEFAULT_COLOR_EXIT_CODE_SUCCESS_FG = 254 # style['col_exit_code_success_fg']
-DEFAULT_COLOR_EXIT_CODE_SUCCESS_BG = 35 # style['col_exit_code_success_bg']
+DEFAULT_COLOR_EXIT_CODE_SUCCESS_BG = 36  # style['col_exit_code_success_bg']
 
-DEFAULT_COLOR_EXIT_CODE_FAIL_FG = 252   # style['col_exit_code_fail_fg']
-DEFAULT_COLOR_EXIT_CODE_FAIL_BG = 124 # style['col_exit_code_fail_bg']
+DEFAULT_COLOR_EXIT_CODE_FAIL_FG = 252 # style['col_exit_code_fail_fg']
+DEFAULT_COLOR_EXIT_CODE_FAIL_BG = 88  # style['col_exit_code_fail_bg']
 
 ###############
 ### postfix ###
 ###############
 
-DEFAULT_STRING_POSTFIX = "" if os.environ['TERM'] != 'linux' else "▶▶" # style['str_postfix']
+DEFAULT_STRING_POSTFIX = "" if os.environ['TERM'] != 'linux' else "" # style['str_postfix']
 
 DEFAULT_COLOR_POSTFIX_FG = 244 # style['col_postfix_fg']
 

@@ -93,7 +93,7 @@ PROMPT_PATH="/" "$PROMPT_SCRIPT"
 echo "
 
 
-A directory can be indicated as unreadable (r), unwritable (w), setguid (g), and/or sticky (t):
+A directory can be indicated as unreadable ($(c 160)r${R}), unwritable ($(c 160)w${R}), setguid ($(c 40)g${R}), and/or sticky ($(c 40)t${R}):
 "
 
 export PROMPT_PATH="/tmp/sessions/1/log"
@@ -122,9 +122,9 @@ echo "
 
 
 Git indicators are displayed in the following order:
-($(c 230)branch${R}) ($(c 254)ahead${R})($(c 166)behind${R}) ($(c 33)merging${R})($(c 160)untracked${R})($(c 214)modified${R})($(c 34)staged${R})
+($(c 230)branch${R}) ($(c 254)ahead${R})($(c 232)behind${R}) ($(c 19)merging${R})($(c 124)untracked${R})($(c 220)modified${R})($(c 40)staged${R})
 
-Directories belonging to a git repository are highlighted with a $(c 228)different color${R}:
+Directories belonging to a git repository are highlighted with a $(c 229)different color${R}:
 "
 
 export PROMPT_PATH="/home/user/projects/cool-program/src"
