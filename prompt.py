@@ -67,13 +67,13 @@ DEFAULT_COLOR_EXIT_CODE_SUCCESS_BG = 36  # style['col_exit_code_success_bg']
 DEFAULT_COLOR_EXIT_CODE_FAIL_FG = 252 # style['col_exit_code_fail_fg']
 DEFAULT_COLOR_EXIT_CODE_FAIL_BG = 88  # style['col_exit_code_fail_bg']
 
+DEFAULT_COLOR_EXIT_CODE_DEFAULT_BG = 244 # style['col_exit_code_default_bg']
+
 ###############
 ### postfix ###
 ###############
 
 DEFAULT_STRING_POSTFIX = "" if os.environ['TERM'] != 'linux' else "" # style['str_postfix']
-
-DEFAULT_COLOR_POSTFIX_FG = 244 # style['col_postfix_fg']
 
 ###############
 
@@ -285,19 +285,19 @@ class Prompt:
         COLOR_GIT_STAGED_FG = self._style.get('col_git_staged_fg', DEFAULT_COLOR_GIT_STAGED_FG)
         COLOR_GIT_BG = self._style.get('col_git_bg', DEFAULT_COLOR_GIT_BG)
 
-        if self._exit_success:
-            COLOR_EXIT_CODE_FG = self._style.get('col_exit_code_success_fg', DEFAULT_COLOR_EXIT_CODE_SUCCESS_FG)
-            COLOR_EXIT_CODE_BG = self._style.get('col_exit_code_success_bg', DEFAULT_COLOR_EXIT_CODE_SUCCESS_BG)
+        if self._exit_code is not None:
+            if self._exit_success:
+                COLOR_EXIT_CODE_FG = self._style.get('col_exit_code_success_fg', DEFAULT_COLOR_EXIT_CODE_SUCCESS_FG)
+                COLOR_EXIT_CODE_BG = self._style.get('col_exit_code_success_bg', DEFAULT_COLOR_EXIT_CODE_SUCCESS_BG)
+            else:
+                COLOR_EXIT_CODE_FG = self._style.get('col_exit_code_fail_fg', DEFAULT_COLOR_EXIT_CODE_FAIL_FG)
+                COLOR_EXIT_CODE_BG = self._style.get('col_exit_code_fail_bg', DEFAULT_COLOR_EXIT_CODE_FAIL_BG)
+
         else:
-            COLOR_EXIT_CODE_FG = self._style.get('col_exit_code_fail_fg', DEFAULT_COLOR_EXIT_CODE_FAIL_FG)
-            COLOR_EXIT_CODE_BG = self._style.get('col_exit_code_fail_bg', DEFAULT_COLOR_EXIT_CODE_FAIL_BG)
+            COLOR_EXIT_CODE_BG = self._style.get('col_exit_code_default_bg', DEFAULT_COLOR_EXIT_CODE_DEFAULT_BG)
 
         POSTFIX = self._style.get('str_postfix', DEFAULT_STRING_POSTFIX)
-
-        if self._exit_code is not None:
-            POSTFIX_FG = COLOR_EXIT_CODE_BG
-        else:
-            POSTFIX_FG = self._style.get('col_postfix_fg', DEFAULT_COLOR_POSTFIX_FG)
+        POSTFIX_FG = COLOR_EXIT_CODE_BG
 
         ################################
         # calculate full prompt length #
@@ -357,15 +357,15 @@ class Prompt:
         length_exit_code_block = 0
         length_exit_code = 0
         length_exit_code_suffix = 0
-        if self._exit_code is not None:
-            length_exit_code_block += 1 # triangle
 
-            if self._exit_code:
-                length_exit_code += 1 + len(self._exit_code) + 1 # space, exit code, space
-                length_exit_code_suffix += len(self._exit_code_suffix)
+        length_exit_code_block += 1 # triangle
 
-            length_exit_code_block += length_exit_code + length_exit_code_suffix
-            length += length_exit_code_block
+        if self._exit_code:
+            length_exit_code += 1 + len(self._exit_code) + 1 # space, exit code, space
+            length_exit_code_suffix += len(self._exit_code_suffix)
+
+        length_exit_code_block += length_exit_code + length_exit_code_suffix
+        length += length_exit_code_block
 
         length += 1 + len(POSTFIX) # triangle, postfix
 
@@ -521,12 +521,11 @@ class Prompt:
                     self._str += color1(COLOR_GIT_STAGED_FG) + CHAR_GIT_STAGED
                 self._str += " "
 
-        if exit_code is not None:
-            self._str += color2(fg=prev_bg, bg=COLOR_EXIT_CODE_BG) + TRIANGLE
-            prev_bg = COLOR_EXIT_CODE_BG
+        self._str += color2(fg=prev_bg, bg=COLOR_EXIT_CODE_BG) + TRIANGLE
+        prev_bg = COLOR_EXIT_CODE_BG
 
-            if exit_code:
-                self._str += color1(COLOR_EXIT_CODE_FG) + " " + exit_code + exit_code_suffix + " "
+        if exit_code:
+            self._str += color1(COLOR_EXIT_CODE_FG) + " " + exit_code + exit_code_suffix + " "
 
         self._str += color2(fg=prev_bg, transparent_bg=True) + TRIANGLE
         if POSTFIX:
