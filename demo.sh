@@ -272,9 +272,9 @@ PROMPT_MAX_LENGTH=52 "$PROMPT_SCRIPT"
 echo "
 - status disappears:
 "
-PROMPT_MAX_LENGTH=48 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=47 "$PROMPT_SCRIPT"
 
 echo "
-Length of the final prompt is 35, which is a third (35/99) of the original length!
+Length of the final prompt is 34, which is a third (34/99) of the original length!
 "
 

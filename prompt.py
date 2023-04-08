@@ -358,10 +358,10 @@ class Prompt:
         length_exit_code = 0
         length_exit_code_suffix = 0
         if self._exit_code is not None:
-            length_exit_code_block += 1 + 1 # triangle, space
+            length_exit_code_block += 1 # triangle
 
             if self._exit_code:
-                length_exit_code += len(self._exit_code) + 1 # exit code, space
+                length_exit_code += 1 + len(self._exit_code) + 1 # space, exit code, space
                 length_exit_code_suffix += len(self._exit_code_suffix)
 
             length_exit_code_block += length_exit_code + length_exit_code_suffix
@@ -522,11 +522,11 @@ class Prompt:
                 self._str += " "
 
         if exit_code is not None:
-            self._str += color2(fg=prev_bg, bg=COLOR_EXIT_CODE_BG) + TRIANGLE + " "
+            self._str += color2(fg=prev_bg, bg=COLOR_EXIT_CODE_BG) + TRIANGLE
             prev_bg = COLOR_EXIT_CODE_BG
 
             if exit_code:
-                self._str += color1(COLOR_EXIT_CODE_FG) + exit_code + exit_code_suffix + " "
+                self._str += color1(COLOR_EXIT_CODE_FG) + " " + exit_code + exit_code_suffix + " "
 
         self._str += color2(fg=prev_bg, transparent_bg=True) + TRIANGLE
         if POSTFIX:
