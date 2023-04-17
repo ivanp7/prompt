@@ -2,8 +2,6 @@
 
 # Set all prompt variables except PROMPT_STATUS, PROMPT_PATH, PROMPT_EXIT_CODE, PROMPT_EXEC_TIME
 
-PROMPT_PY="$(realpath -- "$(dirname -- "$0")/prompt.py")"
-
 [ "$PROMPT_PATH" ] && { cd -- "$PROMPT_PATH" || exit 1; unset PROMPT_PATH; }
 
 [ ! -r "$PWD" ] && export PROMPT_DIR_UNREADABLE= || unset PROMPT_DIR_UNREADABLE
@@ -55,5 +53,6 @@ fi
 : ${PROMPT_MAX_LENGTH:=$(tput cols)}
 export PROMPT_MAX_LENGTH
 
-exec "$PROMPT_PY"
+PROMPT_PY="$(realpath -- "$(dirname -- "$0")/prompt.py")"
+[ -x "$PROMPT_PY" ] && exec "$PROMPT_PY" || exec prompt.py
 
