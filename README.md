@@ -6,7 +6,7 @@
 
 `GIT STATUS`, `EXIT CODE`, `EXEC TIME` blocks are optional and appear only if required.
 
-For full feature demonstration and usage example, run `demo.sh` (not installed with the package).
+For full feature demonstration and usage example, run `demo.sh`.
 The output is long, so a terminal multiplexer or a terminal with vertical scrolling is required.
 Terminus font or another programming font with extra glyph support is recommended.
 
@@ -18,19 +18,20 @@ setting environment variables for everything except status, path, exit code, and
 
 ## Main features of the prompt
 
-1. Is controlled by environment variables.
+1. Is controlled with environment variables.
 The prompt does not analyze shell state by itself,
 it only reads and displays values provided to it by environment variables.
 
-2. Is usable as Python module.
-The prompt is implemented as a class and accepts all supported input values in its constructor.
+2. Is customizable with environment variables.
+Prompt colors, characters, and behavior can be overridden using environment variables.
 
-3. Is customizable with global variables and style parameter of object constructor.
-Prompt colors and characters can be overridden globally and separately for each object.
-
-4. Is adaptive to limited terminal width.
+3. Is adaptive to limited terminal width.
 If prompt length exceeds specified limit,
 it is contracted in a smart way so the information loss in minimized.
+
+4. Is usable as Python module.
+The module implements a small set of functions.
+The default logic is to connect these functions as a pipeline, but it can be changed.
 
 ## Screenshots of `demo.sh`
 
