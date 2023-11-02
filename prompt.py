@@ -387,6 +387,7 @@ def prompt(prompt_state: dict) -> str:
         if surplus > 0:
             surplus -= length_exit_code - length_exit_code_short
             exit_code = exit_code_short
+            length_exit_code = length_exit_code_short
 
             if surplus > 0:
                 surplus -= length_git_branch

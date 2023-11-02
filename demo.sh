@@ -251,7 +251,7 @@ echo "
 "
 PROMPT_MAX_LENGTH=98 "$PROMPT_SCRIPT"
 echo "
-- exit code suffix disappears:
+- exit code description shortens:
 "
 PROMPT_MAX_LENGTH=96 "$PROMPT_SCRIPT"
 echo "
