@@ -8,11 +8,11 @@ import json
 # default style
 PROMPT_STYLE = {
         ### status ###
-        'col_status_fg_nr': 250,
-        'col_status_bg_nr': 240,
+        'col_status_fg_nonroot': 250,
+        'col_status_bg_nonroot': 240,
 
-        'col_status_fg_r': 236,
-        'col_status_bg_r': 202,
+        'col_status_fg_root': 236,
+        'col_status_bg_root': 202,
 
         ### path ###
         'ch_path_omit': "≈",
@@ -65,16 +65,16 @@ PROMPT_STYLE = {
 
 # known exit codes
 PROMPT_EXIT_CODES = {
-        "1": "GENERAL", "2": "MISUSE", "126": "NOTEXEC", "127": "NOTFOUND", "128": "ABNORMAL", "255": "OUTOFRANGE",
-        # signals #
-        "129": "SIGHUP",  "130": "SIGINT",    "131": "SIGQUIT", "132": "SIGILL",
-        "133": "SIGTRAP", "134": "SIGABRT",   "135": "SIGBUS",  "136": "SIGFPE",
-        "137": "SIGKILL", "138": "SIGUSR1",   "139": "SIGSEGV", "140": "SIGUSR2",
-        "141": "SIGPIPE", "142": "SIGALRM",   "143": "SIGTERM", "144": "SIGSTKFLT",
-        "145": "SIGCHLD", "146": "SIGCONT",   "147": "SIGSTOP", "148": "SIGTSTP",
-        "149": "SIGTTIN", "150": "SIGTTOU",   "151": "SIGURG",  "152": "SIGXCPU",
-        "153": "SIGXFSZ", "154": "SIGVTALRM", "155": "SIGPROF", "156": "SIGWINCH",
-        "157": "SIGIO",   "158": "SIGPWR",    "159": "SIGSYS",  "162": "SIGRTMIN",
+        "0": "SUCCESS", "1": "GENERAL", "2": "MISUSE", "126": "NOTEXEC", "127": "NOTFOUND", "255": "OUTOFRANGE",
+        # signals (128+N)
+        "128": "ABNORMAL",  "129": "SIGHUP",   "130": "SIGINT",    "131": "SIGQUIT", # 0-3
+        "132": "SIGILL",    "133": "SIGTRAP",  "134": "SIGABRT",   "135": "SIGBUS",  # 4-7
+        "136": "SIGFPE",    "137": "SIGKILL",  "138": "SIGUSR1",   "139": "SIGSEGV", # 8-11
+        "140": "SIGUSR2",   "141": "SIGPIPE",  "142": "SIGALRM",   "143": "SIGTERM", # 12-15
+        "144": "SIGSTKFLT", "145": "SIGCHLD",  "146": "SIGCONT",   "147": "SIGSTOP", # 16-19
+        "148": "SIGTSTP",   "149": "SIGTTIN",  "150": "SIGTTOU",   "151": "SIGURG",  # 20-23
+        "152": "SIGXCPU",   "153": "SIGXFSZ",  "154": "SIGVTALRM", "155": "SIGPROF", # 24-27
+        "156": "SIGWINCH",  "157": "SIGPOLL",  "158": "SIGPWR",    "159": "SIGSYS",  # 28-31
 }
 
 
@@ -154,11 +154,11 @@ def finalize_style(prompt_state: dict) -> dict:
     prompt_style = prompt_state['style']
 
     if 'col_status_fg' not in prompt_style:
-        prompt_style['col_status_fg'] = prompt_style['col_status_fg_r'] if prompt_state['root'] \
-                else prompt_style['col_status_fg_nr']
+        prompt_style['col_status_fg'] = prompt_style['col_status_fg_root'] if prompt_state['root'] \
+                else prompt_style['col_status_fg_nonroot']
     if 'col_status_bg' not in prompt_style:
-        prompt_style['col_status_bg'] = prompt_style['col_status_bg_r'] if prompt_state['root'] \
-                else prompt_style['col_status_bg_nr']
+        prompt_style['col_status_bg'] = prompt_style['col_status_bg_root'] if prompt_state['root'] \
+                else prompt_style['col_status_bg_nonroot']
 
     if prompt_state['exit_code'] is not None:
         exit_success = (prompt_state['exit_code'] == "0") or not prompt_state['exit_code']
