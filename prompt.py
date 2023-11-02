@@ -132,6 +132,7 @@ def parse(environ: dict) -> dict:
             prompt_style_changes = {}
         if 'str_exit_code_known' in prompt_style_changes:
             prompt_style['str_exit_code_known'].update(prompt_style_changes['str_exit_code_known'])
+            prompt_style_changes['str_exit_code_known'] = prompt_style['str_exit_code_known']
         prompt_style.update(prompt_style_changes)
     prompt_state['style'] = prompt_style
     del prompt_style, prompt_style_changes
