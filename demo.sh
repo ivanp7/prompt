@@ -52,6 +52,8 @@ ${S}PROMPT_MAX_LENGTH${R} -- prompt length limit (unset to disable contraction)
 
 ${S}PROMPT_STYLE${R} -- prompt style in JSON format (optional, applied on top of the default style)
                 refer to the source code for the list of adjustable elements
+${S}PROMPT_EXIT_CODES${R} -- descriptions of non-standard exit codes in JSON format (optional)
+                     attribute-value pairs are \"code\": \"description\"
 "
 echo "
 

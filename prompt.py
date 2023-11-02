@@ -59,21 +59,22 @@ PROMPT_STYLE = {
 
         'col_exit_code_bg_default': 244,
 
-        'str_exit_code_known': {
-                '1': 'GENERAL', '2': 'MISUSE', '126': 'NOTEXEC', '127': 'NOTFOUND',
-                # signals #
-                '129': 'SIGHUP',  '130': 'SIGINT',    '131': 'SIGQUIT', '132': 'SIGILL',
-                '133': 'SIGTRAP', '134': 'SIGABRT',   '135': 'SIGBUS',  '136': 'SIGFPE',
-                '137': 'SIGKILL', '138': 'SIGUSR1',   '139': 'SIGSEGV', '140': 'SIGUSR2',
-                '141': 'SIGPIPE', '142': 'SIGALRM',   '143': 'SIGTERM', '144': 'SIGSTKFLT',
-                '145': 'SIGCHLD', '146': 'SIGCONT',   '147': 'SIGSTOP', '148': 'SIGTSTP',
-                '149': 'SIGTTIN', '150': 'SIGTTOU',   '151': 'SIGURG',  '152': 'SIGXCPU',
-                '153': 'SIGXFSZ', '154': 'SIGVTALRM', '155': 'SIGPROF', '156': 'SIGWINCH',
-                '157': 'SIGIO',   '158': 'SIGPWR',    '159': 'SIGSYS',  '162': 'SIGRTMIN',
-                },
-
         ### postfix ###
         'str_postfix': "", # "" if $TERM is "linux"
+}
+
+# known exit codes
+PROMPT_EXIT_CODES = {
+        "1": "GENERAL", "2": "MISUSE", "126": "NOTEXEC", "127": "NOTFOUND",
+        # signals #
+        "129": "SIGHUP",  "130": "SIGINT",    "131": "SIGQUIT", "132": "SIGILL",
+        "133": "SIGTRAP", "134": "SIGABRT",   "135": "SIGBUS",  "136": "SIGFPE",
+        "137": "SIGKILL", "138": "SIGUSR1",   "139": "SIGSEGV", "140": "SIGUSR2",
+        "141": "SIGPIPE", "142": "SIGALRM",   "143": "SIGTERM", "144": "SIGSTKFLT",
+        "145": "SIGCHLD", "146": "SIGCONT",   "147": "SIGSTOP", "148": "SIGTSTP",
+        "149": "SIGTTIN", "150": "SIGTTOU",   "151": "SIGURG",  "152": "SIGXCPU",
+        "153": "SIGXFSZ", "154": "SIGVTALRM", "155": "SIGPROF", "156": "SIGWINCH",
+        "157": "SIGIO",   "158": "SIGPWR",    "159": "SIGSYS",  "162": "SIGRTMIN",
 }
 
 
@@ -130,12 +131,20 @@ def parse(environ: dict) -> dict:
             prompt_style_changes = json.loads(prompt_style_changes)
         except:
             prompt_style_changes = {}
-        if 'str_exit_code_known' in prompt_style_changes:
-            prompt_style['str_exit_code_known'].update(prompt_style_changes['str_exit_code_known'])
-            prompt_style_changes['str_exit_code_known'] = prompt_style['str_exit_code_known']
         prompt_style.update(prompt_style_changes)
     prompt_state['style'] = prompt_style
-    del prompt_style, prompt_style_changes
+    del prompt_style_changes
+
+    known_exit_codes = PROMPT_EXIT_CODES
+    known_exit_codes_changes = environ.get('PROMPT_EXIT_CODES', None)
+    if known_exit_codes_changes is not None:
+        try:
+            known_exit_codes_changes = json.loads(known_exit_codes_changes)
+        except:
+            known_exit_codes_changes = {}
+        known_exit_codes.update(known_exit_codes_changes)
+    prompt_style['str_exit_code_known'] = known_exit_codes
+    del known_exit_codes, known_exit_codes_changes
 
     return prompt_state
 
