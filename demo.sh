@@ -49,6 +49,9 @@ ${S}PROMPT_EXEC_TIME${R} -- execution time of last command in seconds (unset if 
 ${S}PROMPT_ROOT${R} -- current user is root (unset otherwise)
 
 ${S}PROMPT_MAX_LENGTH${R} -- prompt length limit (unset to disable contraction)
+
+${S}PROMPT_STYLE${R} -- prompt style in JSON format (optional, applied on top of the default style)
+                refer to the source code for the list of adjustable elements
 "
 echo "
 
@@ -85,7 +88,7 @@ export PROMPT_PATH="/this/is/a/very/long/PROMPT_PATH/directory/with/more/than/10
 "$PROMPT_SCRIPT"
 
 echo "
-Root directory is the exception:
+Root directory is the only exception:
 "
 
 PROMPT_PATH="/" "$PROMPT_SCRIPT"
