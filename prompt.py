@@ -65,7 +65,7 @@ PROMPT_STYLE = {
 
 # known exit codes
 PROMPT_EXIT_CODES = {
-        "1": "GENERAL", "2": "MISUSE", "126": "NOTEXEC", "127": "NOTFOUND",
+        "1": "GENERAL", "2": "MISUSE", "126": "NOTEXEC", "127": "NOTFOUND", "128": "ABNORMAL", "255": "OUTOFRANGE",
         # signals #
         "129": "SIGHUP",  "130": "SIGINT",    "131": "SIGQUIT", "132": "SIGILL",
         "133": "SIGTRAP", "134": "SIGABRT",   "135": "SIGBUS",  "136": "SIGFPE",
