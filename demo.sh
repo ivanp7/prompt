@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MIN_COLS=99
+MIN_COLS=100
 CURRENT_COLS="$(tput cols)"
 if [ "$(tput cols)" -lt $MIN_COLS ]
 then
@@ -17,7 +17,7 @@ R="\033[0m"
 PROMPT_SCRIPT="$(dirname -- "$0")/prompt.py"
 
 unset PROMPT_STATUS PROMPT_PATH
-unset PROMPT_DIR_UNREADABLE PROMPT_DIR_UNWRITABLE PROMPT_DIR_SETGUID PROMPT_DIR_STICKY
+unset PROMPT_DIR_UNREADABLE PROMPT_DIR_UNWRITABLE PROMPT_DIR_UNVISITABLE PROMPT_DIR_SETGUID PROMPT_DIR_STICKY
 unset PROMPT_GIT_BRANCH PROMPT_GIT_DIR_DEPTH PROMPT_GIT_AHEAD PROMPT_GIT_BEHIND
 unset PROMPT_GIT_MERGING PROMPT_GIT_UNTRACKED PROMPT_GIT_MODIFIED PROMPT_GIT_STAGED
 unset PROMPT_EXIT_CODE PROMPT_EXEC_TIME
@@ -31,6 +31,7 @@ ${S}PROMPT_STATUS${R} -- arbitrary short status message
 ${S}PROMPT_PATH${R} -- absolute path to present working directory (if unset, ${S}PWD${R} is used instead)
     ${S}PROMPT_DIR_UNREADABLE${R} -- present working directory is unreadable
     ${S}PROMPT_DIR_UNWRITABLE${R} -- present working directory is unwritable
+    ${S}PROMPT_DIR_UNVISITABLE${R} -- present working directory is unvisitable (cannot be cd'd into)
     ${S}PROMPT_DIR_SETGUID${R} -- present working directory has setguid bit set
     ${S}PROMPT_DIR_STICKY${R} -- present working directory has sticky bit set
 
@@ -98,7 +99,8 @@ PROMPT_PATH="/" "$PROMPT_SCRIPT"
 echo "
 
 
-A directory can be indicated as unreadable ($(c 160)r${R}), unwritable ($(c 160)w${R}), setguid ($(c 40)g${R}), and/or sticky ($(c 40)t${R}):
+A directory can be indicated as unreadable ($(c 160)r${R}), unwritable ($(c 160)w${R}), unvisitable ($(c 160)x${R}),
+setguid ($(c 40)g${R}), and/or sticky ($(c 40)t${R}):
 "
 
 export PROMPT_PATH="/tmp/sessions/1/log"
@@ -106,11 +108,13 @@ PROMPT_DIR_UNREADABLE= "$PROMPT_SCRIPT"
 echo
 PROMPT_DIR_UNWRITABLE= "$PROMPT_SCRIPT"
 echo
+PROMPT_DIR_UNVISITABLE= "$PROMPT_SCRIPT"
+echo
 PROMPT_DIR_SETGUID= "$PROMPT_SCRIPT"
 echo
 PROMPT_DIR_STICKY= "$PROMPT_SCRIPT"
 echo
-PROMPT_DIR_UNREADABLE= PROMPT_DIR_UNWRITABLE= PROMPT_DIR_SETGUID= PROMPT_DIR_STICKY= "$PROMPT_SCRIPT"
+PROMPT_DIR_UNREADABLE= PROMPT_DIR_UNWRITABLE= PROMPT_DIR_UNVISITABLE= PROMPT_DIR_SETGUID= PROMPT_DIR_STICKY= "$PROMPT_SCRIPT"
 
 echo "
 
@@ -224,6 +228,7 @@ export PROMPT_STATUS="PROMPT_STATUS"
 export PROMPT_PATH="/this/is/PROMPT_PATH"
 export PROMPT_DIR_UNREADABLE=
 export PROMPT_DIR_UNWRITABLE=
+export PROMPT_DIR_UNVISITABLE=
 export PROMPT_DIR_SETGUID=
 export PROMPT_DIR_STICKY=
 export PROMPT_GIT_BRANCH="PROMPT_GIT_BRANCH"
@@ -241,7 +246,7 @@ export PROMPT_ROOT=
 "$PROMPT_SCRIPT"
 
 echo "
-This prompt's length is 99 columns. It is long and may not fit in the terminal.
+This prompt's length is 100 columns. It is long and may not fit in the terminal.
 However, it is possible to set length limit so the prompt would be contracted if necessary.
 
 Steps of contraction:"
@@ -249,37 +254,37 @@ Steps of contraction:"
 echo "
 - postfix disappears:
 "
-PROMPT_MAX_LENGTH=98 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=99 "$PROMPT_SCRIPT"
 echo "
 - exit code description shortens:
 "
-PROMPT_MAX_LENGTH=96 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=97 "$PROMPT_SCRIPT"
 echo "
 - git branch name disappears:
 "
-PROMPT_MAX_LENGTH=88 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=89 "$PROMPT_SCRIPT"
 echo "
 - characters are omitted from path components:
 "
-PROMPT_MAX_LENGTH=64 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=65 "$PROMPT_SCRIPT"
 echo "
 - minimum is 2 characters per path component:
 "
-PROMPT_MAX_LENGTH=60 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=61 "$PROMPT_SCRIPT"
 echo "
 - execution time disappears:
 "
-PROMPT_MAX_LENGTH=59 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=60 "$PROMPT_SCRIPT"
 echo "
 - exit code disappears, leaving color strip only:
 "
-PROMPT_MAX_LENGTH=52 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=53 "$PROMPT_SCRIPT"
 echo "
 - status disappears:
 "
-PROMPT_MAX_LENGTH=47 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=48 "$PROMPT_SCRIPT"
 
 echo "
-Length of the final prompt is 34, which is a third (34/99) of the original length!
+Length of the final prompt is 35, which is a third (35/100) of the original length!
 "
 

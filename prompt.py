@@ -19,6 +19,7 @@ PROMPT_STYLE = {
         'ch_path_nonprint': "_",
         'ch_path_dir_unreadable': "r",
         'ch_path_dir_unwritable': "w",
+        'ch_path_dir_unvisitable': "x",
         'ch_path_dir_setguid': "g",
         'ch_path_dir_sticky': "t",
 
@@ -97,6 +98,7 @@ def parse(environ: dict) -> AttributeDict:
     prompt.path = environ['PROMPT_PATH'] if 'PROMPT_PATH' in environ else environ['PWD']
     prompt.path_dir_unreadable = 'PROMPT_DIR_UNREADABLE' in environ
     prompt.path_dir_unwritable = 'PROMPT_DIR_UNWRITABLE' in environ
+    prompt.path_dir_unvisitable = 'PROMPT_DIR_UNVISITABLE' in environ
     prompt.path_dir_setguid = 'PROMPT_DIR_SETGUID' in environ
     prompt.path_dir_sticky = 'PROMPT_DIR_STICKY' in environ
 
@@ -273,6 +275,7 @@ def visualize(prompt: AttributeDict) -> str:
     assert len(prompt.style.ch_path_nonprint) == 1
     assert len(prompt.style.ch_path_dir_unreadable) == 1
     assert len(prompt.style.ch_path_dir_unwritable) == 1
+    assert len(prompt.style.ch_path_dir_unvisitable) == 1
     assert len(prompt.style.ch_path_dir_setguid) == 1
     assert len(prompt.style.ch_path_dir_sticky) == 1
 
@@ -288,7 +291,7 @@ def visualize(prompt: AttributeDict) -> str:
         length += 1 + 1 + 1 + 1 # triangle, space, slash, space
 
     length_dir_attributes = int(prompt.path_dir_unreadable) + int(prompt.path_dir_unwritable) + \
-            int(prompt.path_dir_setguid) + int(prompt.path_dir_sticky) # char, char, char, char
+            int(prompt.path_dir_unvisitable) + int(prompt.path_dir_setguid) + int(prompt.path_dir_sticky) # char, char, char, char, char
     if length_dir_attributes > 0:
         length_dir_attributes += 1 # space
         length += length_dir_attributes
@@ -454,8 +457,8 @@ def visualize(prompt: AttributeDict) -> str:
     prompt_str += " "
 
     if prompt.path_dir_unreadable or prompt.path_dir_unwritable \
-            or prompt.path_dir_setguid or prompt.path_dir_sticky:
-                if prompt.path_dir_unreadable or prompt.path_dir_unwritable:
+            or prompt.path_dir_unvisitable or prompt.path_dir_setguid or prompt.path_dir_sticky:
+                if prompt.path_dir_unreadable or prompt.path_dir_unwritable or prompt.path_dir_unvisitable:
                     prompt_str += color1(prompt.style.col_path_noperm_fg)
 
                     if prompt.path_dir_unreadable:
@@ -463,6 +466,9 @@ def visualize(prompt: AttributeDict) -> str:
 
                     if prompt.path_dir_unwritable:
                         prompt_str += prompt.style.ch_path_dir_unwritable
+
+                    if prompt.path_dir_unvisitable:
+                        prompt_str += prompt.style.ch_path_dir_unvisitable
 
                 if prompt.path_dir_setguid or prompt.path_dir_sticky:
                     prompt_str += color1(prompt.style.col_path_perm_fg)
