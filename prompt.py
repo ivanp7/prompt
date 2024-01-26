@@ -66,16 +66,15 @@ PROMPT_STYLE = {
 
 # known exit codes
 PROMPT_EXIT_CODES = {
-        "0": "SUCCESS", "1": "GENERAL", "2": "MISUSE", "126": "NOTEXEC", "127": "NOTFOUND", "255": "OUTOFRANGE",
+        "0": "SUCCESS", "1": "GENERAL", "2": "MISUSE",
+        "126": "NOTEXEC", "128": "ABNORMAL",  "127": "NOTFOUND", "255": "OUTOFRANGE",
         # signals (128+N)
-        "128": "ABNORMAL",  "129": "SIGHUP",   "130": "SIGINT",    "131": "SIGQUIT", # 0-3
-        "132": "SIGILL",    "133": "SIGTRAP",  "134": "SIGABRT",   "135": "SIGBUS",  # 4-7
-        "136": "SIGFPE",    "137": "SIGKILL",  "138": "SIGUSR1",   "139": "SIGSEGV", # 8-11
-        "140": "SIGUSR2",   "141": "SIGPIPE",  "142": "SIGALRM",   "143": "SIGTERM", # 12-15
-        "144": "SIGSTKFLT", "145": "SIGCHLD",  "146": "SIGCONT",   "147": "SIGSTOP", # 16-19
-        "148": "SIGTSTP",   "149": "SIGTTIN",  "150": "SIGTTOU",   "151": "SIGURG",  # 20-23
-        "152": "SIGXCPU",   "153": "SIGXFSZ",  "154": "SIGVTALRM", "155": "SIGPROF", # 24-27
-        "156": "SIGWINCH",  "157": "SIGPOLL",  "158": "SIGPWR",    "159": "SIGSYS",  # 28-31
+        "129": "SIGHUP",    "130": "SIGINT",    "131": "SIGQUIT",   "132": "SIGILL",    "133": "SIGTRAP",   # 1-5
+        "134": "SIGABRT",   "135": "SIGBUS",    "136": "SIGFPE",    "137": "SIGKILL",   "138": "SIGUSR1",   # 6-10
+        "139": "SIGSEGV",   "140": "SIGUSR2",   "141": "SIGPIPE",   "142": "SIGALRM",   "143": "SIGTERM",   # 11-15
+        "145": "SIGCHLD",   "146": "SIGCONT",   "147": "SIGSTOP",   "148": "SIGTSTP",   "149": "SIGTTIN",   # 17-21
+        "150": "SIGTTOU",   "151": "SIGURG",    "152": "SIGXCPU",   "153": "SIGXFSZ",   "154": "SIGVTALRM", # 22-26
+        "155": "SIGPROF",   "156": "SIGWINCH",  "157": "SIGPOLL",   "158": "SIGPWR",    "159": "SIGSYS",    # 27-31
 }
 
 
