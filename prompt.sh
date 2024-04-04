@@ -19,7 +19,7 @@ fi
 reset_git ()
 {
     unset PROMPT_GIT_DIR_DEPTH
-    unset PROMPT_GIT_BRANCH
+    unset PROMPT_GIT_BRANCH PROMPT_GIT_DETACHED
     unset PROMPT_GIT_AHEAD PROMPT_GIT_BEHIND PROMPT_GIT_MERGING
     unset PROMPT_GIT_UNTRACKED PROMPT_GIT_MODIFIED PROMPT_GIT_STAGED
 }
@@ -32,6 +32,13 @@ then
         [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" = "false" ]
     then
         export PROMPT_GIT_BRANCH="$(git branch --show-current)"
+        if [ "$PROMPT_GIT_BRANCH" ]
+        then
+            unset PROMPT_GIT_DETACHED
+        else
+            export PROMPT_GIT_BRANCH="$(git rev-parse --short HEAD)"
+            export PROMPT_GIT_DETACHED=
+        fi
 
         GIT_ROOT="$(git rev-parse --show-toplevel 2> /dev/null)"
         GIT_RELPATH="$(realpath --relative-base="$GIT_ROOT" "$PWD")"

@@ -39,3 +39,5 @@ The default logic is to connect these functions as a pipeline, but it can be cha
 
 ![](screenshots/demo-2.png)
 
+![](screenshots/demo-3.png)
+

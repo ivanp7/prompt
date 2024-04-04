@@ -41,6 +41,7 @@ PROMPT_STYLE = {
         'ch_git_staged': "•",
 
         'col_git_branch_fg': 230,
+        'col_git_detached_fg': 208,
         'col_git_ahead_fg': 254,
         'col_git_behind_fg': 232,
         'col_git_merging_fg': 19,
@@ -108,6 +109,7 @@ def parse(environ: dict) -> AttributeDict:
         prompt.path_git_dir_depth = -2 # -1 is insufficient when $PWD is /
 
     prompt.git_branch = environ.get('PROMPT_GIT_BRANCH', None)
+    prompt.git_detached = 'PROMPT_GIT_DETACHED' in environ
     prompt.git_ahead = environ.get('PROMPT_GIT_AHEAD', None)
     prompt.git_behind = environ.get('PROMPT_GIT_BEHIND', None)
     prompt.git_merging = 'PROMPT_GIT_MERGING' in environ
@@ -485,7 +487,8 @@ def visualize(prompt: AttributeDict) -> str:
         prev_bg = prompt.style.col_git_bg
 
         if git_branch:
-            prompt_str += color1(prompt.style.col_git_branch_fg) + git_branch + " "
+            prompt_str += color1(prompt.style.col_git_branch_fg if not prompt.git_detached
+                                 else prompt.style.col_git_detached_fg) + git_branch + " "
 
         if git_history:
             if prompt.git_ahead:

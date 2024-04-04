@@ -18,7 +18,7 @@ PROMPT_SCRIPT="$(dirname -- "$0")/prompt.py"
 
 unset PROMPT_STATUS PROMPT_PATH
 unset PROMPT_DIR_UNREADABLE PROMPT_DIR_UNWRITABLE PROMPT_DIR_UNVISITABLE PROMPT_DIR_SETGUID PROMPT_DIR_STICKY
-unset PROMPT_GIT_BRANCH PROMPT_GIT_DIR_DEPTH PROMPT_GIT_AHEAD PROMPT_GIT_BEHIND
+unset PROMPT_GIT_BRANCH PROMPT_GIT_DETACHED PROMPT_GIT_DIR_DEPTH PROMPT_GIT_AHEAD PROMPT_GIT_BEHIND
 unset PROMPT_GIT_MERGING PROMPT_GIT_UNTRACKED PROMPT_GIT_MODIFIED PROMPT_GIT_STAGED
 unset PROMPT_EXIT_CODE PROMPT_EXEC_TIME
 unset PROMPT_ROOT
@@ -36,6 +36,7 @@ ${S}PROMPT_PATH${R} -- absolute path to present working directory (if unset, ${S
     ${S}PROMPT_DIR_STICKY${R} -- present working directory has sticky bit set
 
 ${S}PROMPT_GIT_BRANCH${R} -- name of current git branch (unset if not in git repository)
+    ${S}PROMPT_GIT_DETACHED${R} -- HEAD is detached
     ${S}PROMPT_GIT_DIR_DEPTH${R} -- depth into repository directory tree (unset if not in git repository)
     ${S}PROMPT_GIT_AHEAD${R} -- number of commits ahead remote repository (unset if none)
     ${S}PROMPT_GIT_BEHIND${R} -- number of commits behind remote repository (unset if none)
@@ -164,6 +165,15 @@ echo
 unset PROMPT_GIT_AHEAD PROMPT_GIT_STAGED
 "$PROMPT_SCRIPT"
 unset PROMPT_GIT_BRANCH PROMPT_GIT_DIR_DEPTH
+
+echo "
+In a detached HEAD state, short commit hash is shown:
+"
+
+export PROMPT_GIT_BRANCH="5a324a4"
+export PROMPT_GIT_DETACHED=
+"$PROMPT_SCRIPT"
+unset PROMPT_GIT_BRANCH PROMPT_GIT_DETACHED
 
 echo "
 
