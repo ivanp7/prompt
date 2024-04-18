@@ -62,7 +62,7 @@ echo "
 Without any of these variables set, the prompt displays present working directory only:
 "
 
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo "
 Non-printable characters (codes 0-31, 127) are replaced with a special symbol,
@@ -70,17 +70,17 @@ so the prompt won't break:
 "
 
 export PROMPT_PATH="$(echo "/the/last/path/component/has 2 lines:/first line\nsecond line")"
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo
 
 export PROMPT_PATH="$(echo "/this/has/tabs\tin\tthe\tname")"
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo
 
 export PROMPT_PATH="$(echo "/do\rnot\ause\vnon printable\033characters\nin\tthe\bfile\fname")"
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo "
 Notice that slashes separating the path components are replaced with digits.
@@ -89,13 +89,13 @@ to get to that point from the current directory (modulo 10):
 "
 
 export PROMPT_PATH="/this/is/a/very/long/PROMPT_PATH/directory/with/more/than/10/components"
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo "
 Root directory is the only exception:
 "
 
-PROMPT_PATH="/" "$PROMPT_SCRIPT"
+PROMPT_PATH="/" "$PROMPT_SCRIPT"; echo
 
 echo "
 
@@ -105,17 +105,17 @@ setguid ($(c 40)g${R}), and/or sticky ($(c 40)t${R}):
 "
 
 export PROMPT_PATH="/tmp/sessions/1/log"
-PROMPT_DIR_UNREADABLE= "$PROMPT_SCRIPT"
+PROMPT_DIR_UNREADABLE= "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_DIR_UNWRITABLE= "$PROMPT_SCRIPT"
+PROMPT_DIR_UNWRITABLE= "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_DIR_UNVISITABLE= "$PROMPT_SCRIPT"
+PROMPT_DIR_UNVISITABLE= "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_DIR_SETGUID= "$PROMPT_SCRIPT"
+PROMPT_DIR_SETGUID= "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_DIR_STICKY= "$PROMPT_SCRIPT"
+PROMPT_DIR_STICKY= "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_DIR_UNREADABLE= PROMPT_DIR_UNWRITABLE= PROMPT_DIR_UNVISITABLE= PROMPT_DIR_SETGUID= PROMPT_DIR_STICKY= "$PROMPT_SCRIPT"
+PROMPT_DIR_UNREADABLE= PROMPT_DIR_UNWRITABLE= PROMPT_DIR_UNVISITABLE= PROMPT_DIR_SETGUID= PROMPT_DIR_STICKY= "$PROMPT_SCRIPT"; echo
 
 echo "
 
@@ -124,9 +124,9 @@ Status color is different for non-root users and root:
 "
 
 export PROMPT_PATH="/home/user"
-PROMPT_STATUS="non root" "$PROMPT_SCRIPT"
+PROMPT_STATUS="non root" "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_STATUS="root" PROMPT_ROOT= "$PROMPT_SCRIPT"
+PROMPT_STATUS="root" PROMPT_ROOT= "$PROMPT_SCRIPT"; echo
 
 echo "
 
@@ -146,24 +146,24 @@ export PROMPT_GIT_MERGING=
 export PROMPT_GIT_UNTRACKED=
 export PROMPT_GIT_MODIFIED=
 export PROMPT_GIT_STAGED=
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo "
 Not all indicators have to be displayed at all times:
 "
 
 unset PROMPT_GIT_AHEAD PROMPT_GIT_BEHIND PROMPT_GIT_MERGING PROMPT_GIT_STAGED
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo
 unset PROMPT_GIT_UNTRACKED PROMPT_GIT_MODIFIED
 export PROMPT_GIT_AHEAD=1
 export PROMPT_GIT_STAGED=
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo
 unset PROMPT_GIT_AHEAD PROMPT_GIT_STAGED
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 unset PROMPT_GIT_BRANCH PROMPT_GIT_DIR_DEPTH
 
 echo "
@@ -172,7 +172,7 @@ In a detached HEAD state, short commit hash is shown:
 
 export PROMPT_GIT_BRANCH="5a324a4"
 export PROMPT_GIT_DETACHED=
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 unset PROMPT_GIT_BRANCH PROMPT_GIT_DETACHED
 
 echo "
@@ -182,30 +182,30 @@ For non-zero exit codes without standard meaning, only number is displayed:
 "
 
 export PROMPT_PATH="/usr/local/bin"
-PROMPT_EXIT_CODE=100 "$PROMPT_SCRIPT"
+PROMPT_EXIT_CODE=100 "$PROMPT_SCRIPT"; echo
 
 echo "
 For non-zero exit codes with standard meaning, description is appended:
 "
 
-PROMPT_EXIT_CODE=1 "$PROMPT_SCRIPT"
+PROMPT_EXIT_CODE=1 "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_EXIT_CODE=127 "$PROMPT_SCRIPT"
+PROMPT_EXIT_CODE=127 "$PROMPT_SCRIPT"; echo
 
 echo "
 For exit codes corresponding to signals, signal name is appended:
 "
 
-PROMPT_EXIT_CODE=130 "$PROMPT_SCRIPT"
+PROMPT_EXIT_CODE=130 "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_EXIT_CODE=138 "$PROMPT_SCRIPT"
+PROMPT_EXIT_CODE=138 "$PROMPT_SCRIPT"; echo
 
 echo "
 Zero exit code (command success) is designated with a different color and no text:
 "
 
 export PROMPT_EXIT_CODE=0
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo "
 
@@ -214,19 +214,19 @@ Execution time is displayed as days, hours, minutes, and seconds.
 Up to 2 most significant components are displayed:
 "
 
-PROMPT_STATUS="1 second" PROMPT_EXEC_TIME=1 "$PROMPT_SCRIPT"
+PROMPT_STATUS="1 second" PROMPT_EXEC_TIME=1 "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_STATUS="100 seconds" PROMPT_EXEC_TIME=100 "$PROMPT_SCRIPT"
+PROMPT_STATUS="100 seconds" PROMPT_EXEC_TIME=100 "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_STATUS="10000 seconds" PROMPT_EXEC_TIME=10000 "$PROMPT_SCRIPT"
+PROMPT_STATUS="10000 seconds" PROMPT_EXEC_TIME=10000 "$PROMPT_SCRIPT"; echo
 echo
-PROMPT_STATUS="1000000 seconds" PROMPT_EXEC_TIME=1000000 "$PROMPT_SCRIPT"
+PROMPT_STATUS="1000000 seconds" PROMPT_EXEC_TIME=1000000 "$PROMPT_SCRIPT"; echo
 
 echo "
 If execution time is 0 seconds, it is not displayed:
 "
 
-PROMPT_STATUS="0 seconds" PROMPT_EXEC_TIME=0 "$PROMPT_SCRIPT"
+PROMPT_STATUS="0 seconds" PROMPT_EXEC_TIME=0 "$PROMPT_SCRIPT"; echo
 
 echo "
 
@@ -253,7 +253,7 @@ export PROMPT_EXIT_CODE=138
 export PROMPT_EXEC_TIME=999
 export PROMPT_ROOT=
 
-"$PROMPT_SCRIPT"
+"$PROMPT_SCRIPT"; echo
 
 echo "
 This prompt's length is 100 columns. It is long and may not fit in the terminal.
@@ -264,35 +264,35 @@ Steps of contraction:"
 echo "
 - postfix disappears:
 "
-PROMPT_MAX_LENGTH=99 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=99 "$PROMPT_SCRIPT"; echo
 echo "
 - exit code description shortens:
 "
-PROMPT_MAX_LENGTH=97 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=97 "$PROMPT_SCRIPT"; echo
 echo "
 - git branch name disappears:
 "
-PROMPT_MAX_LENGTH=89 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=89 "$PROMPT_SCRIPT"; echo
 echo "
 - characters are omitted from path components:
 "
-PROMPT_MAX_LENGTH=65 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=65 "$PROMPT_SCRIPT"; echo
 echo "
 - minimum is 2 characters per path component:
 "
-PROMPT_MAX_LENGTH=61 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=61 "$PROMPT_SCRIPT"; echo
 echo "
 - execution time disappears:
 "
-PROMPT_MAX_LENGTH=60 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=60 "$PROMPT_SCRIPT"; echo
 echo "
 - exit code disappears, leaving color strip only:
 "
-PROMPT_MAX_LENGTH=53 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=53 "$PROMPT_SCRIPT"; echo
 echo "
 - status disappears:
 "
-PROMPT_MAX_LENGTH=48 "$PROMPT_SCRIPT"
+PROMPT_MAX_LENGTH=48 "$PROMPT_SCRIPT"; echo
 
 echo "
 Length of the final prompt is 35, which is a third (35/100) of the original length!

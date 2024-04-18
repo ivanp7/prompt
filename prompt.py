@@ -528,5 +528,5 @@ def visualize(prompt: AttributeDict) -> str:
 
 
 if __name__ == '__main__':
-    print(visualize(prettify(finalize_style(parse(os.environ)))))
+    print(visualize(prettify(finalize_style(parse(os.environ)))), end="")
 
