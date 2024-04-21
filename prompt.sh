@@ -41,7 +41,7 @@ then
         fi
 
         GIT_ROOT="$(git rev-parse --show-toplevel 2> /dev/null)"
-        GIT_RELPATH="$(realpath --relative-base="$GIT_ROOT" "$PWD")"
+        GIT_RELPATH="$(realpath --relative-base="$GIT_ROOT" -- "$PWD")"
         if [ "$GIT_RELPATH" = "." ]
         then
             export PROMPT_GIT_DIR_DEPTH=0
@@ -59,7 +59,7 @@ then
         [ -n "$GIT_DIR" -a -r "$GIT_DIR/MERGE_HEAD" ] &&
             export PROMPT_GIT_MERGING= || unset PROMPT_GIT_MERGING
 
-        [ "$(git ls-files $(git rev-parse --show-toplevel) --other --exclude-standard 2> /dev/null)" ] &&
+        [ "$(git ls-files "$GIT_ROOT" --others --exclude-standard 2> /dev/null)" ] &&
             export PROMPT_GIT_UNTRACKED= || unset PROMPT_GIT_UNTRACKED
 
         git diff --quiet 2> /dev/null &&
