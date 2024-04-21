@@ -164,7 +164,6 @@ export PROMPT_GIT_STAGED=
 echo
 unset PROMPT_GIT_AHEAD PROMPT_GIT_STAGED
 "$PROMPT_SCRIPT"; echo
-unset PROMPT_GIT_BRANCH PROMPT_GIT_DIR_DEPTH
 
 echo "
 In a detached HEAD state, short commit hash is shown:
@@ -173,7 +172,7 @@ In a detached HEAD state, short commit hash is shown:
 export PROMPT_GIT_BRANCH="5a324a4"
 export PROMPT_GIT_DETACHED=
 "$PROMPT_SCRIPT"; echo
-unset PROMPT_GIT_BRANCH PROMPT_GIT_DETACHED
+unset PROMPT_GIT_BRANCH PROMPT_GIT_DIR_DEPTH PROMPT_GIT_DETACHED
 
 echo "
 
