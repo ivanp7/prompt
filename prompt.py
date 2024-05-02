@@ -333,7 +333,7 @@ def visualize(prompt: AttributeDict) -> str:
     length_exit_code_short = 0
 
     length_exit_code_block += 1 # triangle
-    if prompt.exit_code is not None:
+    if prompt.exit_code:
         length_exit_code += 1 + len(prompt.exit_code) + 1 # space, exit code, space
 
         if 'exit_code_short' in prompt:
